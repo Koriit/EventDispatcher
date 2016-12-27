@@ -1,0 +1,10 @@
+# PHP-ED files
+/vendor/
+
+# Eclipse files
+.buildpath
+.project
+.settings/
+
+# NetBeans files
+/nbproject/

@@ -1,0 +1,21 @@
+{
+    "name": "koriit/php-ed",
+    "description": "Simple event dispatcher",
+    "type": "library",
+    "homepage": "https://github.com/Koriit/PHP-ED",
+    "autoload": {
+        "psr-4": {
+            "EventDispatcher\\": "src/EventDispatcher/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aleksander Stelmaczonek",
+            "email": "al.stelmaczonek@gmail.com"
+        }
+    ],
+    "require": {
+        "php-di/php-di": "^5.4"
+    }
+}
