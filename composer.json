@@ -3,11 +3,6 @@
     "description": "Simple event dispatcher",
     "type": "library",
     "homepage": "https://github.com/Koriit/PHP-ED",
-    "autoload": {
-        "psr-4": {
-            "EventDispatcher\\": "src/EventDispatcher/"
-        }
-    },
     "license": "MIT",
     "authors": [
         {
@@ -15,7 +10,23 @@
             "email": "al.stelmaczonek@gmail.com"
         }
     ],
+    "scripts": {
+        "test": "phpunit"
+    },
+    "autoload": {
+        "psr-4": {
+            "EventDispatcher\\": "src/EventDispatcher/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EventDispatcher\\Test\\": "tests/"
+        }
+},
     "require": {
         "php-di/php-di": "^5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.8"
     }
 }
