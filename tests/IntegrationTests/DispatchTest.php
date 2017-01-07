@@ -19,6 +19,17 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function should_not_fail_without_listeners()
+    {
+        $eventName = "mock";
+        $context = $this->dispatcher->dispatch($eventName);
+
+        $this->assertInstanceOf(EventContextInterface::class, $context);
+    }
+
+    /**
+     * @test
+     */
     public function should_execute_listeners_on_dispatch()
     {
         $eventName = "mock";

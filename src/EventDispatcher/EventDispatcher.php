@@ -19,25 +19,28 @@ class EventDispatcher implements EventDispatcherInterface
     {
         $eventContext = new EventContext($eventName);
 
-        $parameters["eventName"] = $eventName;
-        $parameters["eventContext"] = $eventContext;
-        $parameters["eventDispatcher"] = $this;
-
-        foreach($this->listeners[$eventName] as $listeners)
+        if (isset($this->listeners[$eventName]))
         {
-            foreach($listeners as $listener)
+            $parameters["eventName"] = $eventName;
+            $parameters["eventContext"] = $eventContext;
+            $parameters["eventDispatcher"] = $this;
+
+            foreach($this->listeners[$eventName] as $listeners)
             {
-                if($eventContext->isStopped())
+                foreach($listeners as $listener)
                 {
-                    $eventContext->addStoppedListener($listener);
-                }
-                else
-                {
-                    if($this->invoker->call($listener, $parameters))
+                    if($eventContext->isStopped())
                     {
-                        $eventContext->setStopped(true);
+                        $eventContext->addStoppedListener($listener);
                     }
-                    $eventContext->addExecutedListener($listener);
+                    else
+                    {
+                        if($this->invoker->call($listener, $parameters))
+                        {
+                            $eventContext->setStopped(true);
+                        }
+                        $eventContext->addExecutedListener($listener);
+                    }
                 }
             }
         }
