@@ -1,4 +1,5 @@
 <?php
+
 namespace EventDispatcher\Test\UnitTests;
 
 use DI\ContainerBuilder;
@@ -10,7 +11,8 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$mockListener = function(){};
+        self::$mockListener = function () {
+        };
     }
 
     /**
@@ -21,7 +23,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $invoker = ContainerBuilder::buildDevContainer();
         $dispatcher = new EventDispatcher($invoker);
 
-        $eventName = "mock";
+        $eventName = 'mock';
         $dispatcher->addListener($eventName, self::$mockListener);
 
         $this->assertTrue($dispatcher->hasListeners());
@@ -45,7 +47,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $invoker = ContainerBuilder::buildDevContainer();
         $dispatcher = new EventDispatcher($invoker);
 
-        $eventName = "mock";
+        $eventName = 'mock';
         $dispatcher->addListener($eventName, self::$mockListener);
         $dispatcher->removeListener($eventName, self::$mockListener);
 
@@ -68,12 +70,9 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $invoker = ContainerBuilder::buildDevContainer();
         $dispatcher = new EventDispatcher($invoker);
 
-        foreach($manualListeners as $eventName => $byPriority)
-        {
-            foreach($byPriority as $priority => $listeners)
-            {
-                foreach($listeners as $listener)
-                {
+        foreach ($manualListeners as $eventName => $byPriority) {
+            foreach ($byPriority as $priority => $listeners) {
+                foreach ($listeners as $listener) {
                     $dispatcher->addListener($eventName, $listener, $priority);
                 }
             }
@@ -86,115 +85,131 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     public function bulkListenersProvider()
     {
         return [
-          "onlyBulk" => [
+          'onlyBulk' => [
               [],
               [
-                "mockEvent" => [
+                'mockEvent' => [
                     0 => [
-                        function(){}
-                    ]
-                ]
+                        function () {
+                        },
+                    ],
+                ],
               ],
               [
-                "mockEvent" => [
+                'mockEvent' => [
                     0 => [
-                        function(){}
-                    ]
-                ]
-              ]
+                        function () {
+                        },
+                    ],
+                ],
+              ],
           ],
-          "onlyManual" => [
+          'onlyManual' => [
               [
-                "mockEvent" => [
+                'mockEvent' => [
                     0 => [
-                        function(){}
-                    ]
-                ]
+                        function () {
+                        },
+                    ],
+                ],
               ],
               [],
               [
-                "mockEvent" => [
+                'mockEvent' => [
                     0 => [
-                        function(){}
-                    ]
-                ]
-              ]
-          ],
-          "sameBulkAndManual" => [
-              [
-                "mockEvent" => [
-                    0 => [
-                        function(){}
-                    ]
-                ]
-              ],
-              [
-                "mockEvent" => [
-                    0 => [
-                        function(){}
-                    ]
-                ]
-              ],
-              [
-                "mockEvent" => [
-                    0 => [
-                        function(){},
-                        function(){},
-                    ]
-                ]
+                        function () {
+                        },
+                    ],
+                ],
               ],
           ],
-          "sameBulkAndManualDiffPriority" => [
+          'sameBulkAndManual' => [
               [
-                "mockEvent" => [
+                'mockEvent' => [
                     0 => [
-                        function(){}
-                    ]
-                ]
+                        function () {
+                        },
+                    ],
+                ],
               ],
               [
-                "mockEvent" => [
+                'mockEvent' => [
+                    0 => [
+                        function () {
+                        },
+                    ],
+                ],
+              ],
+              [
+                'mockEvent' => [
+                    0 => [
+                        function () {
+                        },
+                        function () {
+                        },
+                    ],
+                ],
+              ],
+          ],
+          'sameBulkAndManualDiffPriority' => [
+              [
+                'mockEvent' => [
+                    0 => [
+                        function () {
+                        },
+                    ],
+                ],
+              ],
+              [
+                'mockEvent' => [
                     1 => [
-                        function(){}
-                    ]
-                ]
+                        function () {
+                        },
+                    ],
+                ],
               ],
               [
-                "mockEvent" => [
+                'mockEvent' => [
                     0 => [
-                        function(){}
+                        function () {
+                        },
                     ],
                     1 => [
-                        function(){}
-                    ]
-                ]
+                        function () {
+                        },
+                    ],
+                ],
               ],
           ],
-          "diffBulkAndManual" => [
+          'diffBulkAndManual' => [
               [
-                "mockEvent2" => [
+                'mockEvent2' => [
                     0 => [
-                        function(){}
-                    ]
-                ]
-              ],
-              [
-                "mockEvent" => [
-                    0 => [
-                        function(){}
-                    ]
-                ]
-              ],
-              [
-                "mockEvent" => [
-                    0 => [
-                        function(){}
-                    ]
+                        function () {
+                        },
+                    ],
                 ],
-                "mockEvent2" => [
+              ],
+              [
+                'mockEvent' => [
                     0 => [
-                        function(){}
-                    ]
+                        function () {
+                        },
+                    ],
+                ],
+              ],
+              [
+                'mockEvent' => [
+                    0 => [
+                        function () {
+                        },
+                    ],
+                ],
+                'mockEvent2' => [
+                    0 => [
+                        function () {
+                        },
+                    ],
                 ],
               ],
           ],

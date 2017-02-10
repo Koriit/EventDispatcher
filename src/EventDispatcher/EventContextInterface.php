@@ -1,4 +1,5 @@
 <?php
+
 namespace EventDispatcher;
 
 interface EventContextInterface

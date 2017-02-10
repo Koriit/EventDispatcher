@@ -1,4 +1,5 @@
 <?php
+
 namespace EventDispatcher\Test\UnitTests;
 
 use EventDispatcher\EventContext;
@@ -11,8 +12,9 @@ class EventContextTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->eventName = "mock";
-        $this->mockListener = function(){};
+        $this->eventName = 'mock';
+        $this->mockListener = function () {
+        };
         $this->context = new EventContext($this->eventName);
     }
 
@@ -67,6 +69,7 @@ class EventContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @depends should_allow_stopping_event
+     *
      * @param EventContext $context
      */
     public function should_allow_resuming_event($context)

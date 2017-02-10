@@ -2,13 +2,13 @@
 
 /**
  *  @copyright 2016 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
- *  @license MIT License, see license file distributed with this source code.
+ *  @license MIT License, see license file distributed with this source code
  */
 
 namespace EventDispatcher;
 
 /**
- * Description of EventContext
+ * Description of EventContext.
  *
  * @author Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
  */

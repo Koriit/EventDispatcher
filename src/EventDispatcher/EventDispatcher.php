@@ -1,7 +1,7 @@
 <?php
+
 namespace EventDispatcher;
 
-use EventDispatcher\EventDispatcherInterface;
 use DI\InvokerInterface;
 
 class EventDispatcher implements EventDispatcherInterface
@@ -19,24 +19,17 @@ class EventDispatcher implements EventDispatcherInterface
     {
         $eventContext = new EventContext($eventName);
 
-        if (isset($this->listeners[$eventName]))
-        {
-            $parameters["eventName"] = $eventName;
-            $parameters["eventContext"] = $eventContext;
-            $parameters["eventDispatcher"] = $this;
+        if (isset($this->listeners[$eventName])) {
+            $parameters['eventName'] = $eventName;
+            $parameters['eventContext'] = $eventContext;
+            $parameters['eventDispatcher'] = $this;
 
-            foreach($this->listeners[$eventName] as $listeners)
-            {
-                foreach($listeners as $listener)
-                {
-                    if($eventContext->isStopped())
-                    {
+            foreach ($this->listeners[$eventName] as $listeners) {
+                foreach ($listeners as $listener) {
+                    if ($eventContext->isStopped()) {
                         $eventContext->addStoppedListener($listener);
-                    }
-                    else
-                    {
-                        if($this->invoker->call($listener, $parameters))
-                        {
+                    } else {
+                        if ($this->invoker->call($listener, $parameters)) {
                             $eventContext->setStopped(true);
                         }
                         $eventContext->addExecutedListener($listener);
@@ -55,18 +48,12 @@ class EventDispatcher implements EventDispatcherInterface
 
     public function addListeners($listeners)
     {
-        if(empty($this->listeners))
-        {
+        if (empty($this->listeners)) {
             $this->listeners = $listeners;
-        }
-        else
-        {
-            foreach($listeners as $eventName => $byPriority)
-            {
-                foreach($byPriority as $priority => $newListeners)
-                {
-                    foreach($newListeners as $listener)
-                    {
+        } else {
+            foreach ($listeners as $eventName => $byPriority) {
+                foreach ($byPriority as $priority => $newListeners) {
+                    foreach ($newListeners as $listener) {
                         $this->listeners[$eventName][$priority][] = $listener;
                     }
                 }
@@ -93,22 +80,19 @@ class EventDispatcher implements EventDispatcherInterface
         foreach ($this->listeners[$eventName] as $priority => $listeners) {
             if (false !== ($key = array_search($listener, $listeners, true))) {
                 unset($this->listeners[$eventName][$priority][$key]);
-                if(empty($this->listeners[$eventName][$priority]))
-                {
+                if (empty($this->listeners[$eventName][$priority])) {
                     unset($this->listeners[$eventName][$priority]);
                 }
             }
         }
 
-        if(empty($this->listeners[$eventName]))
-        {
+        if (empty($this->listeners[$eventName])) {
             unset($this->listeners[$eventName]);
         }
     }
 
-    public function hasListeners($eventName = NULL)
+    public function hasListeners($eventName = null)
     {
-        return $eventName !== NULL ? !empty($this->listeners[$eventName]) : !empty($this->listeners);
+        return $eventName !== null ? !empty($this->listeners[$eventName]) : !empty($this->listeners);
     }
-
 }

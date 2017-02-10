@@ -1,4 +1,5 @@
 <?php
+
 namespace EventDispatcher\Test\IntegrationTests;
 
 use DI\ContainerBuilder;
@@ -20,8 +21,9 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
      */
     public function should_return_context()
     {
-        $listener = function(){};
-        $eventName = "mock";
+        $listener = function () {
+        };
+        $eventName = 'mock';
         $this->dispatcher->addListener($eventName, $listener);
 
         $context = $this->dispatcher->dispatch($eventName);
@@ -34,10 +36,12 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
      */
     public function should_execute_all_listeners()
     {
-        $listener1 = function(){};
-        $listener2 = function(){};
+        $listener1 = function () {
+        };
+        $listener2 = function () {
+        };
 
-        $eventName = "mock";
+        $eventName = 'mock';
         $this->dispatcher->addListener($eventName, $listener1);
         $this->dispatcher->addListener($eventName, $listener2);
 
@@ -55,10 +59,13 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
      */
     public function should_stop_after_first_listener()
     {
-        $listener1 = function(){ return true; };
-        $listener2 = function(){};
+        $listener1 = function () {
+            return true;
+        };
+        $listener2 = function () {
+        };
 
-        $eventName = "mock";
+        $eventName = 'mock';
         $this->dispatcher->addListener($eventName, $listener1);
         $this->dispatcher->addListener($eventName, $listener2);
 
@@ -69,5 +76,4 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
         $this->assertContains($listener1, $context->getExecutedListeners());
         $this->assertContains($listener2, $context->getStoppedListeners());
     }
-
 }
