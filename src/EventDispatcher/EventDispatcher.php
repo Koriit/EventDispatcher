@@ -1,9 +1,17 @@
 <?php
 
+/**
+ *  @copyright 2016 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
+ *  @license MIT License, see license file distributed with this source code
+ */
+
 namespace EventDispatcher;
 
 use DI\InvokerInterface;
 
+/**
+ * @author Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
+ */
 class EventDispatcher implements EventDispatcherInterface
 {
     protected $listeners = [];

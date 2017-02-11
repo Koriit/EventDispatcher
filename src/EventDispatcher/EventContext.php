@@ -8,8 +8,6 @@
 namespace EventDispatcher;
 
 /**
- * Description of EventContext.
- *
  * @author Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
  */
 class EventContext implements EventContextInterface
