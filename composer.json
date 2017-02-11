@@ -1,6 +1,6 @@
 {
     "name": "koriit/php-ed",
-    "description": "Simple event dispatcher",
+    "description": "Simple event dispatcher based on PHP-DI",
     "type": "library",
     "homepage": "https://github.com/Koriit/PHP-ED",
     "license": "MIT",

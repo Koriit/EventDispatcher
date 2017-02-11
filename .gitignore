@@ -1,10 +1,11 @@
 # PHP-ED files
 /vendor/
+/composer.lock
 
 # Eclipse files
-.buildpath
-.project
-.settings/
+/.buildpath
+/.project
+/.settings/
 
 # NetBeans files
 /nbproject/
