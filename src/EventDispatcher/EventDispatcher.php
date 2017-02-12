@@ -52,6 +52,7 @@ class EventDispatcher implements EventDispatcherInterface
     public function addListener($eventName, $listener, $priority = 0)
     {
         $this->listeners[$eventName][$priority][] = $listener;
+        ksort($this->listeners[$eventName]);
     }
 
     public function addListeners($listeners)
@@ -66,6 +67,10 @@ class EventDispatcher implements EventDispatcherInterface
                     }
                 }
             }
+        }
+
+        foreach (array_keys($this->listeners) as $eventName) {
+            ksort($this->listeners[$eventName]);
         }
     }
 

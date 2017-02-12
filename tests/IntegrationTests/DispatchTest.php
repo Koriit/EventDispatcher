@@ -50,6 +50,54 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function should_execute_listeners_by_priority()
+    {
+        $eventName = 'mock';
+        $listener = function () {
+            echo 'Mock';
+        };
+        $listener2 = function () {
+            echo 'Output';
+        };
+
+        $this->dispatcher->addListener($eventName, $listener2, 2);
+        $this->dispatcher->addListener($eventName, $listener, 1);
+
+        $this->expectOutputString('MockOutput');
+        $this->dispatcher->dispatch($eventName);
+    }
+
+    /**
+     * @test
+     */
+    public function should_execute_listeners_by_priority_with_bulk()
+    {
+        $eventName = 'mock';
+
+        $listeners = [
+            $eventName => [
+                1 => [
+                    function() {
+                        echo 'Output';
+                    }
+                ],
+                0 => [
+                    function() {
+                        echo 'Mock';
+                    }
+                ]
+            ]
+        ];
+
+        $this->dispatcher->addListeners($listeners);
+
+        $this->expectOutputString('MockOutput');
+        $this->dispatcher->dispatch($eventName);
+    }
+
+    /**
+     * @test
+     */
     public function should_inject_event_name()
     {
         $eventName = 'mock';
