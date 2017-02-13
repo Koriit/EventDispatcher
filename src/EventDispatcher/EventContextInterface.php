@@ -36,6 +36,13 @@ interface EventContextInterface
     public function getExecutedListeners();
 
     /**
+     * Returns the value which was returned from listener and lead to stopping the dispatchment chain.
+     *
+     * @return mixed
+     */
+    public function getStopValue();
+
+    /**
      * Returns whether dispatchment chain has been stopped.
      *
      * @return bool

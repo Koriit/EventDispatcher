@@ -34,6 +34,22 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function should_contain_stop_value_in_context()
+    {
+        $listener = function () {
+            return 'StopValue';
+        };
+        $eventName = 'mock';
+        $this->dispatcher->addListener($eventName, $listener);
+
+        $context = $this->dispatcher->dispatch($eventName);
+
+        $this->assertEquals('StopValue', $context->getStopValue());
+    }
+
+    /**
+     * @test
+     */
     public function should_execute_all_listeners()
     {
         $listener1 = function () {

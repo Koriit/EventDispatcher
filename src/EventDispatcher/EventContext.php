@@ -14,6 +14,8 @@ class EventContext implements EventContextInterface
 {
     protected $stopped = false;
 
+    protected $stopValue = null;
+
     protected $executedListeners = [];
 
     protected $stoppedListeners = [];
@@ -58,5 +60,15 @@ class EventContext implements EventContextInterface
     public function setStopped($value)
     {
         $this->stopped = $value;
+    }
+
+    public function getStopValue()
+    {
+        return $this->stopValue;
+    }
+
+    public function setStopValue($stopValue)
+    {
+        $this->stopValue = $stopValue;
     }
 }

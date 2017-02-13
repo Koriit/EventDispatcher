@@ -54,8 +54,9 @@ class EventDispatcher implements EventDispatcherInterface
                     if ($eventContext->isStopped()) {
                         $eventContext->addStoppedListener($listener);
                     } else {
-                        if ($this->invoker->call($listener, $parameters)) {
+                        if ($result = $this->invoker->call($listener, $parameters)) {
                             $eventContext->setStopped(true);
+                            $eventContext->setStopValue($result);
                         }
                         $eventContext->addExecutedListener($listener);
                     }
