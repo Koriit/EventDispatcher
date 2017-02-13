@@ -16,7 +16,17 @@ class EventDispatcher implements EventDispatcherInterface
 {
     protected $listeners = [];
 
+    /**
+     * @var InvokerInterface
+     */
     protected $invoker;
+
+    /**
+     * Indicates whether listeners array can be assumed to be sorted.
+     *
+     * @var bool
+     */
+    protected $sorted = true;
 
     public function __construct(InvokerInterface $invoker)
     {
@@ -28,6 +38,13 @@ class EventDispatcher implements EventDispatcherInterface
         $eventContext = new EventContext($eventName);
 
         if (isset($this->listeners[$eventName])) {
+            if (!$this->sorted) {
+                foreach (array_keys($this->listeners) as $eventName) {
+                    ksort($this->listeners[$eventName]);
+                }
+                $this->sorted = true;
+            }
+
             $parameters['eventName'] = $eventName;
             $parameters['eventContext'] = $eventContext;
             $parameters['eventDispatcher'] = $this;
@@ -52,7 +69,7 @@ class EventDispatcher implements EventDispatcherInterface
     public function addListener($eventName, $listener, $priority = 0)
     {
         $this->listeners[$eventName][$priority][] = $listener;
-        ksort($this->listeners[$eventName]);
+        $this->sorted = false;
     }
 
     public function addListeners($listeners)
@@ -69,9 +86,7 @@ class EventDispatcher implements EventDispatcherInterface
             }
         }
 
-        foreach (array_keys($this->listeners) as $eventName) {
-            ksort($this->listeners[$eventName]);
-        }
+        $this->sorted = false;
     }
 
     public function getListeners($eventName)
