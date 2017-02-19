@@ -5,6 +5,8 @@ Simple event dispatcher based on [PHP-DI](http://php-di.org).
 
 This library **does not** aim to be general purpose library or cover all your possible needs. What this library **does** aim to be is perfect choice for those who use PHP-DI and perfer to use [PHP Definitions](http://php-di.org/doc/php-definitions.html).
 
+The goal is to create as decoupled code as possible. The code that uses the dispatcher may not know its listeners, and the other way around, the listeners may not even know that they are actually used as listeners!
+
 Install
 -------
 
@@ -18,6 +20,7 @@ Tested with PHP-DI 5.4 and newer.
 
 Usage
 -----
+You are encouraged to familiarize yourself with `EventDispatcher\EventDispatcherInterface` and `EventDispatcher\EventContextInterface` as those two interfaces are everything you need to work with this library.
 
 Basic example:
 ```php
@@ -29,21 +32,14 @@ $listener = function (LoggerInterface $logger, Request $request) {
     $logger->info($request->getMethod().' '.$request->getPathInfo());
 };
 
-$dispatcher->addListener(ApplicationLifecycle::INITIALIZING, $listener, 10);
+$dispatcher->addListener("init", $listener, 10);
 
-$dispatcher->dispatch(ApplicationLifecycle::INITIALIZING);
+$dispatcher->dispatch("init");
 ```
 
-Naturally since we are using PHP-DI then we would create a definition for `EventDispatcherInterface` and use:
-```php
-// ...
+Naturally since we are using PHP-DI then we would create a definition for `EventDispatcher\EventDispatcherInterface`.
 
-$dispatcher = $container->get(EventDispatcherInterface::class);
-
-// ...
-```
-
-A listener can be anything that [can be invoked by PHP-DI](http://php-di.org/doc/container.html#call):
+A listener may be anything that [can be invoked by PHP-DI](http://php-di.org/doc/container.html#call):
 ```php
 // MyClass.php
 class MyClass
@@ -91,25 +87,64 @@ $dispatcher->addListener(ApplicationLifecycle::INITIALIZING, [MyInterface::class
 
 $dispatcher->dispatch(ApplicationLifecycle::INITIALIZING);
 ```
-Naturally for above example to work you need to configure a definition for MyInterface.
+For above example to work you need to configure a definition for *MyInterface*, of course.
 
 Adding listeners
 ----------------
-There are 2 ways to subscribe a listener. Both methods are declared in `EventDispatcherInterface`.
+There are 2 ways to subscribe a listener. In both cases you have to specify name of the event and calling priority. The higher the priority value the later the listener will be called. Listeners with the same priority will be called in the order they have been subscribed. You can entirely omit priority parameter as it defaults to **0**.
 
 ### addListener
 
-First, by using `addListener` method on `EventDispatcher` object:
+First, by using `addListener` method on `EventDispatcher\EventDispatcher` object.
 ```php
-// ...
+interface EventDispatcherInterface
+{
+  // ..
 
-$dispatcher->addListener($eventName, $listener, $priority);
+  /**
+   * Subscribes a listener to given event with specific priority.
+   *
+   * Listener must be invokable by PHP-DI.
+   *
+   * The higher the priority value the later the listener will be called.
+   * Listeners with the same priority will be called in the order they have been subscribed.
+   *
+   * @param mixed  $eventName
+   * @param mixed  $listener
+   * @param number $priority
+   */
+  public function addListener($eventName, $listener, $priority = 0);
 
-// ...
+  // ...
+}
 ```
-You can omit priority parameter which defaults to **0**.
 
-Second, by using `addListeners` method on `EventDispatcher` object:
+### addListeners
+
+Second, by using `addListeners` method on `EventDispatcher\EventDispatcher` object.
+```php
+interface EventDispatcherInterface
+{
+  // ..
+
+  /**
+   * Subscribes listeners en masse.
+   *
+   * Listeners array is simple structure of 3 levels.
+   * At first level it is associative array where keys are names of registered events.
+   * At second level it is indexed array where keys are priority values.
+   * At third level it is simple list containing listeners subscribed to given event with given priority.
+   *
+   * @param array $listeners
+   */
+  public function addListeners($listeners);
+
+  // ...
+}
+```
+Listeners array is simple structure of 3 levels. At first level it is associative array where keys are names of registered events. At second level it is indexed array where keys are priority values. At third level it is simple list containing listeners subscribed to given event with given priority.
+
+Example:
 ```php
 // listners.php
 // namespace and imports...
@@ -140,3 +175,57 @@ $dispatcher->addListeners(include 'listeners.php');
 
 // ...
 ```
+
+Dispatchment
+------------
+Dispatchment is a simple process of invoking all listeners subscribed to dispatched event.
+
+```php
+interface EventDispatcherInterface
+{
+    // ...
+
+    /**
+     * Dispatches an event with given name.
+     *
+     * @param mixed $eventName
+     * @param array $parameters
+     *
+     * @return EventContextInterface
+     */
+    public function dispatch($eventName, $parameters = []);
+
+    // ...
+}
+```
+```php
+// ..
+
+$dispatcher->dispatch(ApplicationLifecycle::INITIALIZING);
+```
+
+### Stopping dispatchment
+If any listener in the dispatchment chain returns a value that can be evaluated as *true*, the dispachment is stopped and all the remaining listeners are skipped.
+
+### Context
+Event context is simple data object holding information about the dispatchment process. See `EventDispatcher\EventContextInterface` for more information.
+
+### Parameters
+You can pass additional parameters to be used by invoker while injecting listener arguments by name.
+```php
+// ..
+
+$dispatcher->dispatch(ApplicationLifecycle::INITIALIZING, ["event" => new InitializationEvent()]);
+```
+```php
+function listener($event) {
+  // $event is InitializationEvent object
+}
+```
+
+### eventName, eventContext, eventDispatcher
+There are three parameters overriden and injected by event dispatcher itself:
+
+1. eventName - name of the event dispatched
+2. eventContext - reference to the context object of current dispatchment
+3. eventDispatcher - reference to the event dispatcher itself; this allows for nested dispatchments
