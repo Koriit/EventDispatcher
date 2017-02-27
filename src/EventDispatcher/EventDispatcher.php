@@ -39,8 +39,8 @@ class EventDispatcher implements EventDispatcherInterface
 
         if (isset($this->listeners[$eventName])) {
             if (!$this->sorted) {
-                foreach (array_keys($this->listeners) as $eventName) {
-                    ksort($this->listeners[$eventName]);
+                foreach (array_keys($this->listeners) as $key) {
+                    ksort($this->listeners[$key]);
                 }
                 $this->sorted = true;
             }
