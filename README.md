@@ -89,6 +89,9 @@ $dispatcher->dispatch(ApplicationLifecycle::INITIALIZING);
 ```
 For above example to work you need to configure a definition for *MyInterface*, of course.
 
+**Warning:**  
+Event dispatcher doesn't work well with listeners which implement fluent interface or allow for method chaining. For more information, read about stopping dispatchemnt chain below.
+
 Adding listeners
 ----------------
 There are 2 ways to subscribe a listener. In both cases you have to specify name of the event and calling priority. The higher the priority value the later the listener will be called. Listeners with the same priority will be called in the order they have been subscribed. You can entirely omit priority parameter as it defaults to **0**.
@@ -206,6 +209,8 @@ $dispatcher->dispatch(ApplicationLifecycle::INITIALIZING);
 
 ### Stopping dispatchment
 If any listener in the dispatchment chain returns a value that can be evaluated as *true*, the dispachment is stopped and all the remaining listeners are skipped.
+
+While this design simplifies the process and does not require wiring listeners with event dispatcher, it makes it almost impossible to work with listeners that return values which cannot be interpreted as success or failure. This especially holds true for methods which allow for method chaining or implement fluent interface.
 
 ### Context
 Event context is simple data object holding information about the dispatchment process. See `EventDispatcher\EventContextInterface` for more information.
