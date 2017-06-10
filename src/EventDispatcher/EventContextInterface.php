@@ -15,7 +15,7 @@ namespace Koriit\EventDispatcher;
 interface EventContextInterface
 {
     /**
-     * Returns the name of event being dispatched.
+     * Returns the name of the event being dispatched.
      *
      * @return mixed
      */

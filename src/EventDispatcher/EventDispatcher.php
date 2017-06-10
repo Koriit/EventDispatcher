@@ -8,6 +8,7 @@
 namespace Koriit\EventDispatcher;
 
 use DI\InvokerInterface;
+use Koriit\EventDispatcher\Exceptions\InvalidPriority;
 
 /**
  * @author Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
@@ -37,29 +38,28 @@ class EventDispatcher implements EventDispatcherInterface
     {
         $eventContext = new EventContext($eventName);
 
-        if (isset($this->listeners[$eventName])) {
-            if (!$this->sorted) {
-                foreach (array_keys($this->listeners) as $key) {
-                    ksort($this->listeners[$key]);
-                }
-                $this->sorted = true;
-            }
+        if (!isset($this->listeners[$eventName])) {
+            return $eventContext;
+        }
 
-            $parameters['eventName'] = $eventName;
-            $parameters['eventContext'] = $eventContext;
-            $parameters['eventDispatcher'] = $this;
+        if (!$this->sorted) {
+            $this->sortListenersByPriority();
+        }
 
-            foreach ($this->listeners[$eventName] as $listeners) {
-                foreach ($listeners as $listener) {
-                    if ($eventContext->isStopped()) {
-                        $eventContext->addStoppedListener($listener);
-                    } else {
-                        if ($result = $this->invoker->call($listener, $parameters)) {
-                            $eventContext->setStopped(true);
-                            $eventContext->setStopValue($result);
-                        }
-                        $eventContext->addExecutedListener($listener);
+        $parameters['eventName'] = $eventName;
+        $parameters['eventContext'] = $eventContext;
+        $parameters['eventDispatcher'] = $this;
+
+        foreach ($this->listeners[$eventName] as $listeners) {
+            foreach ($listeners as $listener) {
+                if ($eventContext->isStopped()) {
+                    $eventContext->addStoppedListener($listener);
+                } else {
+                    if ($result = $this->invoker->call($listener, $parameters)) {
+                        $eventContext->setStopped(true);
+                        $eventContext->setStopValue($result);
                     }
+                    $eventContext->addExecutedListener($listener);
                 }
             }
         }
@@ -69,20 +69,24 @@ class EventDispatcher implements EventDispatcherInterface
 
     public function addListener($eventName, $listener, $priority = 0)
     {
+        if(!is_int($priority) || $priority < 0) {
+            throw new InvalidPriority("Expected non-negative integer priority. Provided: " . $priority);
+        }
+
         $this->listeners[$eventName][$priority][] = $listener;
         $this->sorted = false;
     }
 
     public function addListeners($listeners)
     {
-        if (empty($this->listeners)) {
-            $this->listeners = $listeners;
-        } else {
-            foreach ($listeners as $eventName => $byPriority) {
-                foreach ($byPriority as $priority => $newListeners) {
-                    foreach ($newListeners as $listener) {
-                        $this->listeners[$eventName][$priority][] = $listener;
-                    }
+        foreach ($listeners as $eventName => $listenersByPriority) {
+            foreach ($listenersByPriority as $priority => $newListeners) {
+                if(!is_int($priority) || $priority < 0) {
+                    throw new InvalidPriority("Expected non-negative integer priority. Provided: " . $priority);
+                }
+
+                foreach ($newListeners as $listener) {
+                    $this->listeners[$eventName][$priority][] = $listener;
                 }
             }
         }
@@ -123,5 +127,12 @@ class EventDispatcher implements EventDispatcherInterface
     public function hasListeners($eventName = null)
     {
         return $eventName !== null ? !empty($this->listeners[$eventName]) : !empty($this->listeners);
+    }
+
+    protected function sortListenersByPriority() {
+        foreach (array_keys($this->listeners) as $eventName) {
+            ksort($this->listeners[$eventName]);
+        }
+        $this->sorted = true;
     }
 }

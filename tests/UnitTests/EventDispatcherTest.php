@@ -4,10 +4,16 @@ namespace Koriit\EventDispatcher\Test\UnitTests;
 
 use DI\ContainerBuilder;
 use Koriit\EventDispatcher\EventDispatcher;
+use Koriit\EventDispatcher\Exceptions\InvalidPriority;
 
 class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 {
     protected static $mockListener;
+
+    /**
+     * @var EventDispatcher
+     */
+    protected $dispatcher;
 
     public static function setUpBeforeClass()
     {
@@ -15,25 +21,28 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         };
     }
 
+    public function setUp()
+    {
+        $invoker = ContainerBuilder::buildDevContainer();
+        $this->dispatcher = new EventDispatcher($invoker);
+    }
+
     /**
      * @test
      */
     public function should_allow_adding_listeners()
     {
-        $invoker = ContainerBuilder::buildDevContainer();
-        $dispatcher = new EventDispatcher($invoker);
-
         $eventName = 'mock';
-        $dispatcher->addListener($eventName, self::$mockListener);
+        $this->dispatcher->addListener($eventName, self::$mockListener);
 
-        $this->assertTrue($dispatcher->hasListeners());
-        $this->assertTrue($dispatcher->hasListeners($eventName));
+        $this->assertTrue($this->dispatcher->hasListeners());
+        $this->assertTrue($this->dispatcher->hasListeners($eventName));
 
-        $listneres = $dispatcher->getListeners($eventName);
+        $listneres = $this->dispatcher->getListeners($eventName);
         $this->assertFalse(empty($listneres));
         $this->assertEquals(self::$mockListener, $listneres[0][0]);
 
-        $allListeners = $dispatcher->getAllListeners();
+        $allListeners = $this->dispatcher->getAllListeners();
         $this->assertFalse(empty($allListeners));
         $this->assertEquals(self::$mockListener, $allListeners[$eventName][0][0]);
     }
@@ -44,42 +53,93 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function should_allow_removing_listeners()
     {
-        $invoker = ContainerBuilder::buildDevContainer();
-        $dispatcher = new EventDispatcher($invoker);
-
         $eventName = 'mock';
-        $dispatcher->addListener($eventName, self::$mockListener);
-        $dispatcher->removeListener($eventName, self::$mockListener);
+        $this->dispatcher->addListener($eventName, self::$mockListener);
+        $this->dispatcher->removeListener($eventName, self::$mockListener);
 
-        $this->assertFalse($dispatcher->hasListeners());
-        $this->assertFalse($dispatcher->hasListeners($eventName));
+        $this->assertFalse($this->dispatcher->hasListeners());
+        $this->assertFalse($this->dispatcher->hasListeners($eventName));
 
-        $listneres = $dispatcher->getListeners($eventName);
+        $listneres = $this->dispatcher->getListeners($eventName);
         $this->assertTrue(empty($listneres));
 
-        $allListeners = $dispatcher->getAllListeners();
+        $allListeners = $this->dispatcher->getAllListeners();
         $this->assertTrue(empty($allListeners));
     }
 
+    /**
+     * @test
+     */
+    public function should_not_allow_negative_priority()
+    {
+        $this->setExpectedException(InvalidPriority::class);
+
+        $this->dispatcher->addListener('test', self::$mockListener, -1);
+    }
+
+    /**
+     * @test
+     */
+    public function should_allow_only_integer_priority()
+    {
+        $this->setExpectedException(InvalidPriority::class);
+
+        $this->dispatcher->addListener('test', self::$mockListener, "priority");
+    }
+
+    /**
+     * @test
+     */
+    public function should_not_allow_negative_priority_with_bulk()
+    {
+        $this->setExpectedException(InvalidPriority::class);
+
+        $listeners = [
+            "mockEvent" => [
+                -1 => [
+                    function () {
+                    },
+                ],
+            ],
+        ];
+
+        $this->dispatcher->addListeners($listeners);
+    }
+
+    /**
+     * @test
+     */
+    public function should_allow_only_integer_priority_with_bulk()
+    {
+        $this->setExpectedException(InvalidPriority::class);
+
+        $listeners = [
+            "mockEvent" => [
+                "priority" => [
+                    function () {
+                    },
+                ],
+            ],
+        ];
+
+        $this->dispatcher->addListeners($listeners);
+    }
     /**
      * @test
      * @dataProvider bulkListenersProvider
      */
     public function should_allow_adding_bulk_listeners($manualListeners, $bulkListeners, $expected)
     {
-        $invoker = ContainerBuilder::buildDevContainer();
-        $dispatcher = new EventDispatcher($invoker);
-
         foreach ($manualListeners as $eventName => $byPriority) {
             foreach ($byPriority as $priority => $listeners) {
                 foreach ($listeners as $listener) {
-                    $dispatcher->addListener($eventName, $listener, $priority);
+                    $this->dispatcher->addListener($eventName, $listener, $priority);
                 }
             }
         }
-        $dispatcher->addListeners($bulkListeners);
+        $this->dispatcher->addListeners($bulkListeners);
 
-        $this->assertEquals($expected, $dispatcher->getAllListeners());
+        $this->assertEquals($expected, $this->dispatcher->getAllListeners());
     }
 
     public function bulkListenersProvider()

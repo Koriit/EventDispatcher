@@ -18,6 +18,8 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Event should be dispatchable even if no listeners subscribed to it
+     *
      * @test
      */
     public function should_not_fail_without_listeners()
