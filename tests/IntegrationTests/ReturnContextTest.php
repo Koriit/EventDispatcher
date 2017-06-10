@@ -1,10 +1,10 @@
 <?php
 
-namespace EventDispatcher\Test\IntegrationTests;
+namespace Koriit\EventDispatcher\Test\IntegrationTests;
 
 use DI\ContainerBuilder;
-use EventDispatcher\EventDispatcher;
-use EventDispatcher\EventContextInterface;
+use Koriit\EventDispatcher\EventDispatcher;
+use Koriit\EventDispatcher\EventContextInterface;
 
 class ReturnContextTest extends \PHPUnit_Framework_TestCase
 {

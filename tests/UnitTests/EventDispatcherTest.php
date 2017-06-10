@@ -1,9 +1,9 @@
 <?php
 
-namespace EventDispatcher\Test\UnitTests;
+namespace Koriit\EventDispatcher\Test\UnitTests;
 
 use DI\ContainerBuilder;
-use EventDispatcher\EventDispatcher;
+use Koriit\EventDispatcher\EventDispatcher;
 
 class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 {

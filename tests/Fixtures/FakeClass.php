@@ -1,6 +1,6 @@
 <?php
 
-namespace EventDispatcher\Test\Fixtures;
+namespace Koriit\EventDispatcher\Test\Fixtures;
 
 class FakeClass
 {

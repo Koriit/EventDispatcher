@@ -1,11 +1,11 @@
 <?php
 
-namespace EventDispatcher\Test\IntegrationTests;
+namespace Koriit\EventDispatcher\Test\IntegrationTests;
 
 use DI\ContainerBuilder;
-use EventDispatcher\EventDispatcher;
-use EventDispatcher\EventContextInterface;
-use EventDispatcher\Test\Fixtures\FakeClass;
+use Koriit\EventDispatcher\EventDispatcher;
+use Koriit\EventDispatcher\EventContextInterface;
+use Koriit\EventDispatcher\Test\Fixtures\FakeClass;
 
 class DispatchTest extends \PHPUnit_Framework_TestCase
 {

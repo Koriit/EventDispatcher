@@ -1,8 +1,8 @@
 <?php
 
-namespace EventDispatcher\Test\UnitTests;
+namespace Koriit\EventDispatcher\Test\UnitTests;
 
-use EventDispatcher\EventContext;
+use Koriit\EventDispatcher\EventContext;
 
 class EventContextTest extends \PHPUnit_Framework_TestCase
 {

@@ -9,3 +9,6 @@
 
 # NetBeans files
 /nbproject/
+
+# IDEA files
+/.idea/

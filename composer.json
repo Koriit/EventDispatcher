@@ -1,8 +1,8 @@
 {
-    "name": "koriit/php-ed",
+    "name": "koriit/eventdispatcher",
     "description": "Simple event dispatcher based on PHP-DI",
     "type": "library",
-    "homepage": "https://github.com/Koriit/PHP-ED",
+    "homepage": "https://github.com/Koriit/EventDispatcher",
     "license": "MIT",
     "authors": [
         {
@@ -15,14 +15,14 @@
     },
     "autoload": {
         "psr-4": {
-            "EventDispatcher\\": "src/EventDispatcher/"
+            "Koriit\\EventDispatcher\\": "src/EventDispatcher/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "EventDispatcher\\Test\\": "tests/"
+            "Koriit\\EventDispatcher\\Test\\": "tests/"
         }
-},
+    },
     "require": {
         "php-di/php-di": "^5.4"
     },

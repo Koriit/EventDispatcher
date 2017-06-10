@@ -1,11 +1,11 @@
 <?php
 
 /**
- *  @copyright 2016 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
+ *  @copyright 2017 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
  *  @license MIT License, see license file distributed with this source code
  */
 
-namespace EventDispatcher;
+namespace Koriit\EventDispatcher;
 
 use DI\InvokerInterface;
 
