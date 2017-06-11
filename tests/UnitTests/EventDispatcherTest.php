@@ -84,7 +84,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(InvalidPriority::class);
 
-        $this->dispatcher->addListener('test', self::$mockListener, "priority");
+        $this->dispatcher->addListener('test', self::$mockListener, 'priority');
     }
 
     /**
@@ -95,7 +95,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(InvalidPriority::class);
 
         $listeners = [
-            "mockEvent" => [
+            'mockEvent' => [
                 -1 => [
                     function () {
                     },
@@ -114,8 +114,8 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(InvalidPriority::class);
 
         $listeners = [
-            "mockEvent" => [
-                "priority" => [
+            'mockEvent' => [
+                'priority' => [
                     function () {
                     },
                 ],

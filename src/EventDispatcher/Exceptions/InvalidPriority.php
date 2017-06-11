@@ -7,9 +7,6 @@
 
 namespace Koriit\EventDispatcher\Exceptions;
 
-
-use Throwable;
-
 class InvalidPriority extends \LogicException
 {
     public function __construct($message)

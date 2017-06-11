@@ -67,7 +67,8 @@ interface EventDispatcherInterface
      *
      * Returns only second and third level of listeners array.
      *
-     * @see EventDispatcherInterface::addListeners For description of listeners array.
+     * @see EventDispatcherInterface::addListeners For description of listeners array
+     *
      * @param mixed $eventName
      *
      * @return array
@@ -77,7 +78,7 @@ interface EventDispatcherInterface
     /**
      * Returns listeners array.
      *
-     * @see EventDispatcherInterface::addListeners For description of listeners array.
+     * @see EventDispatcherInterface::addListeners For description of listeners array
      *
      * @return array
      */

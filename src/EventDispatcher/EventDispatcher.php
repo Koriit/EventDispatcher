@@ -69,8 +69,8 @@ class EventDispatcher implements EventDispatcherInterface
 
     public function addListener($eventName, $listener, $priority = 0)
     {
-        if(!is_int($priority) || $priority < 0) {
-            throw new InvalidPriority("Expected non-negative integer priority. Provided: " . $priority);
+        if (!is_int($priority) || $priority < 0) {
+            throw new InvalidPriority('Expected non-negative integer priority. Provided: '.$priority);
         }
 
         $this->listeners[$eventName][$priority][] = $listener;
@@ -81,8 +81,8 @@ class EventDispatcher implements EventDispatcherInterface
     {
         foreach ($listeners as $eventName => $listenersByPriority) {
             foreach ($listenersByPriority as $priority => $newListeners) {
-                if(!is_int($priority) || $priority < 0) {
-                    throw new InvalidPriority("Expected non-negative integer priority. Provided: " . $priority);
+                if (!is_int($priority) || $priority < 0) {
+                    throw new InvalidPriority('Expected non-negative integer priority. Provided: '.$priority);
                 }
 
                 foreach ($newListeners as $listener) {

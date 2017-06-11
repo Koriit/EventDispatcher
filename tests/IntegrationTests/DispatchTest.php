@@ -18,7 +18,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Event should be dispatchable even if no listeners subscribed to it
+     * Event should be dispatchable even if no listeners subscribed to it.
      *
      * @test
      */
@@ -100,16 +100,16 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
         $listeners = [
             $eventName => [
                 1 => [
-                    function() {
+                    function () {
                         echo 'Output';
-                    }
+                    },
                 ],
                 0 => [
-                    function() {
+                    function () {
                         echo 'Mock';
-                    }
-                ]
-            ]
+                    },
+                ],
+            ],
         ];
 
         $this->dispatcher->addListeners($listeners);
