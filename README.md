@@ -1,5 +1,5 @@
-PHP-ED
-======
+About
+-----
 
 Simple event dispatcher based on [PHP-DI](http://php-di.org).
 
@@ -10,7 +10,7 @@ The goal is to create as decoupled code as possible. The code that uses the disp
 Install
 -------
 
-PHP-ED is available via composer:
+EventDispatcher is available via composer:
 
 ```sh
 composer require koriit/eventdispatcher

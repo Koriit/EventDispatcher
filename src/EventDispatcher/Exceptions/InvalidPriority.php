@@ -9,8 +9,4 @@ namespace Koriit\EventDispatcher\Exceptions;
 
 class InvalidPriority extends \LogicException
 {
-    public function __construct($message)
-    {
-        parent::__construct($message);
-    }
 }
