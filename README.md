@@ -13,14 +13,14 @@ Install
 PHP-ED is available via composer:
 
 ```sh
-composer require koriit/php-ed
+composer require koriit/eventdispatcher
 ```
 
-Tested with PHP-DI 5.4 and newer.
+Tested with PHP-DI ^5.4.
 
 Usage
 -----
-You are encouraged to familiarize yourself with `EventDispatcher\EventDispatcherInterface` and `EventDispatcher\EventContextInterface` as those two interfaces are everything you need to work with this library.
+You are encouraged to familiarize yourself with `Koriit\EventDispatcher\EventDispatcherInterface` and `Koriit\EventDispatcher\EventContextInterface` as those two interfaces are everything you need to work with this library.
 
 Basic example:
 ```php
@@ -37,7 +37,7 @@ $dispatcher->addListener("init", $listener, 10);
 $dispatcher->dispatch("init");
 ```
 
-Naturally since we are using PHP-DI then we would create a definition for `EventDispatcher\EventDispatcherInterface`.
+Naturally since we are using PHP-DI then we would create a definition for `Koriit\EventDispatcher\EventDispatcherInterface`.
 
 A listener may be anything that [can be invoked by PHP-DI](http://php-di.org/doc/container.html#call):
 ```php
@@ -98,7 +98,7 @@ There are 2 ways to subscribe a listener. In both cases you have to specify name
 
 ### addListener
 
-First, by using `addListener` method on `EventDispatcher\EventDispatcher` object.
+First, by using `addListener` method on `Koriit\EventDispatcher\EventDispatcher` object.
 ```php
 interface EventDispatcherInterface
 {
@@ -124,7 +124,7 @@ interface EventDispatcherInterface
 
 ### addListeners
 
-Second, by using `addListeners` method on `EventDispatcher\EventDispatcher` object.
+Second, by using `addListeners` method on `Koriit\EventDispatcher\EventDispatcher` object.
 ```php
 interface EventDispatcherInterface
 {
@@ -213,7 +213,7 @@ If any listener in the dispatchment chain returns a value that can be evaluated 
 While this design simplifies the process and does not require wiring listeners with event dispatcher, it makes it almost impossible to work with listeners that return values which cannot be interpreted as success or failure. This especially holds true for methods which allow for method chaining or implement fluent interface.
 
 ### Context
-Event context is simple data object holding information about the dispatchment process. See `EventDispatcher\EventContextInterface` for more information.
+Event context is simple data object holding information about the dispatchment process. See `Koriit\EventDispatcher\EventContextInterface` for more information.
 
 ### Parameters
 You can pass additional parameters to be used by invoker while injecting listener arguments by name.
@@ -229,7 +229,7 @@ function listener($event) {
 ```
 
 ### eventName, eventContext, eventDispatcher
-There are three parameters overriden and injected by event dispatcher itself:
+There are three parameters overridden and injected by event dispatcher itself:
 
 1. eventName - name of the event dispatched
 2. eventContext - reference to the context object of current dispatchment
