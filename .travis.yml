@@ -14,3 +14,10 @@ php:
 
 before_script:
   - composer install -n
+
+script:
+  - if [[ $(phpenv version-name) == '7.1' ]]; then vendor/bin/phpunit --coverage-clover clover.xml ; fi
+  - if [[ $(phpenv version-name) != '7.1' ]]; then vendor/bin/phpunit ; fi
+
+after_script:
+  - if [[ $(phpenv version-name) == '7.1' ]]; then php vendor/bin/coveralls -v ; fi
