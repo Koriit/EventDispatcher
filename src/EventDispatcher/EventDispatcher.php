@@ -1,8 +1,8 @@
 <?php
 
 /**
- *  @copyright 2017 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
- *  @license MIT License, see license file distributed with this source code
+ * @copyright 2017 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
+ * @license MIT License, see license file distributed with this source code
  */
 
 namespace Koriit\EventDispatcher;
@@ -15,6 +15,9 @@ use Koriit\EventDispatcher\Exceptions\InvalidPriority;
  */
 class EventDispatcher implements EventDispatcherInterface
 {
+    /**
+     * @var array
+     */
     protected $listeners = [];
 
     /**
@@ -55,10 +58,15 @@ class EventDispatcher implements EventDispatcherInterface
                 if ($eventContext->isStopped()) {
                     $eventContext->addStoppedListener($listener);
                 } else {
-                    if ($result = $this->invoker->call($listener, $parameters)) {
+                    $eventContext->ignoreReturnValue(false);
+                    $result = $this->invoker->call($listener, $parameters);
+                    if ($eventContext->isStopped()) {
+                        $eventContext->setStopValue(true);
+                    } else if (!$eventContext->isReturnValueIgnored() && $result) {
                         $eventContext->setStopped(true);
                         $eventContext->setStopValue($result);
                     }
+
                     $eventContext->addExecutedListener($listener);
                 }
             }
@@ -129,7 +137,8 @@ class EventDispatcher implements EventDispatcherInterface
         return $eventName !== null ? !empty($this->listeners[$eventName]) : !empty($this->listeners);
     }
 
-    protected function sortListenersByPriority() {
+    protected function sortListenersByPriority()
+    {
         foreach (array_keys($this->listeners) as $eventName) {
             ksort($this->listeners[$eventName]);
         }

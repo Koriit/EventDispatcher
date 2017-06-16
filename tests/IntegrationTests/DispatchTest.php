@@ -9,6 +9,9 @@ use Koriit\EventDispatcher\Test\Fixtures\FakeClass;
 
 class DispatchTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var EventDispatcherInterface
+     */
     protected $dispatcher;
 
     public function setUp()
@@ -181,11 +184,14 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     public function should_inject_parameters()
     {
         $eventName = 'mock';
+        $mockParam = 'mockParam';
         $test = $this;
-        $listener = function ($param) use ($test) {
-            $test->assertEquals('mock', $param);
+
+        $listener = function ($param) use ($test, $mockParam) {
+            $test->assertEquals($mockParam, $param);
         };
+
         $this->dispatcher->addListener($eventName, $listener);
-        $this->dispatcher->dispatch($eventName, ['param' => 'mock']);
+        $this->dispatcher->dispatch($eventName, ['param' => $mockParam]);
     }
 }

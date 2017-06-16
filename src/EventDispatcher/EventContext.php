@@ -12,14 +12,34 @@ namespace Koriit\EventDispatcher;
  */
 class EventContext implements EventContextInterface
 {
+    /**
+     * @var bool
+     */
     protected $stopped = false;
 
-    protected $stopValue = null;
+    /**
+     * @var mixed
+     */
+    protected $stopValue;
 
+    /**
+     * @var bool
+     */
+    protected $ignoreReturnValue = false;
+
+    /**
+     * @var array
+     */
     protected $executedListeners = [];
 
+    /**
+     * @var array
+     */
     protected $stoppedListeners = [];
 
+    /**
+     * @var mixed
+     */
     protected $eventName;
 
     public function __construct($eventName)
@@ -66,9 +86,29 @@ class EventContext implements EventContextInterface
     {
         return $this->stopValue;
     }
-
+    /**
+     * Sets the value which stopped the dispatchment chain.
+     *
+     * @param mixed $stopValue
+     * @return void
+     */
     public function setStopValue($stopValue)
     {
         $this->stopValue = $stopValue;
+    }
+
+    public function ignoreReturnValue($switch)
+    {
+        $this->ignoreReturnValue = $switch;
+    }
+
+    public function isReturnValueIgnored()
+    {
+        return $this->ignoreReturnValue;
+    }
+
+    public function stop()
+    {
+        $this->stopped = true;
     }
 }

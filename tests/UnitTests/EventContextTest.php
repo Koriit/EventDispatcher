@@ -3,11 +3,23 @@
 namespace Koriit\EventDispatcher\Test\UnitTests;
 
 use Koriit\EventDispatcher\EventContext;
+use Koriit\EventDispatcher\EventContextInterface;
 
 class EventContextTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var EventContextInterface
+     */
     protected $context;
+
+    /**
+     * @var mixed
+     */
     protected $eventName;
+
+    /**
+     * @var callable
+     */
     protected $mockListener;
 
     public function setUp()
@@ -78,4 +90,15 @@ class EventContextTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($context->isStopped());
     }
+
+    public function should_allow_ignoring_return_value()
+    {
+        $this->context->ignoreReturnValue(true);
+        $this->assertTrue($this->context->isReturnValueIgnored());
+
+        $this->context->ignoreReturnValue(false);
+        $this->assertFalse($this->context->isReturnValueIgnored());
+    }
+
+
 }

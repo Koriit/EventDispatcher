@@ -48,4 +48,31 @@ interface EventContextInterface
      * @return bool
      */
     public function isStopped();
+
+    /**
+     * Stops dispatchment after currently executed listener.
+     *
+     * In this case getStopValue MUST return true.
+     *
+     * @return void
+     */
+    public function stop();
+
+    /**
+     * Switches whether return value of currently executed listener should be ignored.
+     *
+     * Dispatcher must set this option to false before calling each listener.
+     *
+     * @param bool $switch
+     *
+     * @return void
+     */
+    public function ignoreReturnValue($switch);
+
+    /**
+     * Returns whether return value of currently executed listener should be ignored.
+     *
+     * @return bool
+     */
+    public function isReturnValueIgnored();
 }
