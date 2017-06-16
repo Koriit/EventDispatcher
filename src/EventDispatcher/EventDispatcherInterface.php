@@ -1,8 +1,8 @@
 <?php
 
 /**
- *  @copyright 2017 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
- *  @license MIT License, see license file distributed with this source code
+ * @copyright 2017 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
+ * @license MIT License, see license file distributed with this source code
  */
 
 namespace Koriit\EventDispatcher;
@@ -32,8 +32,8 @@ interface EventDispatcherInterface
      * The higher the priority value the later the listener will be called.
      * Listeners with the same priority will be called in the order they have been subscribed.
      *
-     * @param mixed  $eventName
-     * @param mixed  $listener
+     * @param mixed $eventName
+     * @param mixed $listener
      * @param integer $priority
      *
      * @return void

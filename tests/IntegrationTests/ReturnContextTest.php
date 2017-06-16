@@ -153,7 +153,7 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
     {
         $listener1 = function ($eventContext) {
             $eventContext->stop();
-            return "TruthValue";
+            return 'TruthValue';
         };
 
         $eventName = 'mock';

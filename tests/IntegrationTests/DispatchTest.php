@@ -5,6 +5,8 @@ namespace Koriit\EventDispatcher\Test\IntegrationTests;
 use DI\ContainerBuilder;
 use Koriit\EventDispatcher\EventDispatcher;
 use Koriit\EventDispatcher\EventContextInterface;
+use Koriit\EventDispatcher\EventDispatcherInterface;
+use Koriit\EventDispatcher\Exceptions\OverriddenParameter;
 use Koriit\EventDispatcher\Test\Fixtures\FakeClass;
 
 class DispatchTest extends \PHPUnit_Framework_TestCase
@@ -193,5 +195,45 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
 
         $this->dispatcher->addListener($eventName, $listener);
         $this->dispatcher->dispatch($eventName, ['param' => $mockParam]);
+    }
+
+    /**
+     * @test
+     * @dataProvider overriddenParametersProvider
+     *
+     * @param string $param
+     */
+    public function should_throw_when_parameters_overridden($param)
+    {
+        $this->setExpectedException(OverriddenParameter::class);
+
+        $this->dispatcher->dispatch('mockEvent', [$param => $param]);
+    }
+
+    /**
+     * @test
+     * @dataProvider overriddenParametersProvider
+     *
+     * @param string $param
+     */
+    public function should_throw_when_parameters_overridden_without_listeners($param)
+    {
+        $this->setExpectedException(OverriddenParameter::class);
+
+        $eventName = 'mock';
+        $listener = function () {
+        };
+
+        $this->dispatcher->addListener($eventName, $listener);
+        $this->dispatcher->dispatch($eventName, [$param => $param]);
+    }
+
+    public function overriddenParametersProvider()
+    {
+        return [
+            ['eventName'],
+            ['eventContext'],
+            ['eventDispatcher'],
+        ];
     }
 }

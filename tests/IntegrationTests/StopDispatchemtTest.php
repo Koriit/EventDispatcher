@@ -78,7 +78,7 @@ class StopDispatchemtTest extends \PHPUnit_Framework_TestCase
         $listener = function ($eventContext) {
             $eventContext->ignoreReturnValue(true);
             $eventContext->stop();
-            return "TruthValue";
+            return 'TruthValue';
         };
         $eventName = 'mock';
         $this->dispatcher->addListener($eventName, $listener);
@@ -96,10 +96,10 @@ class StopDispatchemtTest extends \PHPUnit_Framework_TestCase
     {
         $listener = function ($eventContext) {
             $eventContext->ignoreReturnValue(true);
-            return "TruthValue";
+            return 'TruthValue';
         };
         $listener2 = function ($eventContext) {
-            return "TruthValue";
+            return 'TruthValue';
         };
 
         $eventName = 'mock';

@@ -9,7 +9,9 @@ EventDispatcher
 
 Simple event dispatcher based on [PHP-DI](http://php-di.org).
 
-This library **does not** aim to be general purpose library or cover all your possible needs. What this library **does** aim to be is perfect choice for those who use PHP-DI and perfer to use [PHP Definitions](http://php-di.org/doc/php-definitions.html).
+This library **does not** aim to be general purpose library or cover all your possible needs. 
+What this library **does** aim to be is perfect choice for those who use PHP-DI and prefer 
+to use [PHP Definitions](http://php-di.org/doc/php-definitions.html).
 
 The goal is to create as decoupled code as possible. The code that uses the dispatcher may not know its listeners, and the other way around, the listeners may not even know that they are actually used as listeners!
 
@@ -26,7 +28,9 @@ Tested with PHP-DI ^5.4.
 
 Usage
 -----
-You are encouraged to familiarize yourself with `Koriit\EventDispatcher\EventDispatcherInterface` and `Koriit\EventDispatcher\EventContextInterface` as those two interfaces are everything you need to work with this library.
+You are encouraged to familiarize yourself with `Koriit\EventDispatcher\EventDispatcherInterface` and 
+`Koriit\EventDispatcher\EventContextInterface` as those two interfaces are everything you need to work 
+with this library.
 
 Basic example:
 ```php
@@ -43,7 +47,8 @@ $dispatcher->addListener("init", $listener, 10);
 $dispatcher->dispatch("init");
 ```
 
-Naturally since we are using PHP-DI then we would create a definition for `Koriit\EventDispatcher\EventDispatcherInterface`.
+Naturally since we are using PHP-DI then we would create a definition for 
+`Koriit\EventDispatcher\EventDispatcherInterface`.
 
 A listener may be anything that [can be invoked by PHP-DI](http://php-di.org/doc/container.html#call):
 ```php
@@ -96,11 +101,15 @@ $dispatcher->dispatch(ApplicationLifecycle::INITIALIZING);
 For above example to work you need to configure a definition for *MyInterface*, of course.
 
 **Warning:**  
-Event dispatcher doesn't work well with listeners which implement fluent interface or allow for method chaining. For more information, read about stopping dispatchemnt chain below.
+Event dispatcher doesn't work well with listeners which implement fluent interface or allow for 
+method chaining. For more information, read about stopping dispatchemnt chain below.
 
 Adding listeners
 ----------------
-There are 2 ways to subscribe a listener. In both cases you have to specify name of the event and calling priority. The higher the priority value the later the listener will be called. Listeners with the same priority will be called in the order they have been subscribed. You can entirely omit priority parameter as it defaults to **0**.
+There are 2 ways to subscribe a listener. In both cases you have to specify name of the event and 
+calling priority. The higher the priority value the later the listener will be called. 
+Listeners with the same priority will be called in the order they have been subscribed. 
+You can entirely omit priority parameter as it defaults to **0**.
 
 ### addListener
 
@@ -151,7 +160,9 @@ interface EventDispatcherInterface
   // ...
 }
 ```
-Listeners array is simple structure of 3 levels. At first level it is associative array where keys are names of registered events. At second level it is indexed array where keys are priority values. At third level it is simple list containing listeners subscribed to given event with given priority.
+Listeners array is simple structure of 3 levels. At first level it is associative array where keys are 
+names of registered events. At second level it is indexed array where keys are priority values. 
+At third level it is simple list containing listeners subscribed to given event with given priority.
 
 Example:
 ```php
@@ -214,12 +225,19 @@ $dispatcher->dispatch(ApplicationLifecycle::INITIALIZING);
 ```
 
 ### Stopping dispatchment
-If any listener in the dispatchment chain returns a value that can be evaluated as *true*, the dispachment is stopped and all the remaining listeners are skipped.
+If any listener in the dispatchment chain returns a value that can be evaluated as *true*, 
+the dispachment is stopped and all the remaining listeners are skipped. You can also achieve this by 
+calling `stop` on event context.
 
-While this design simplifies the process and does not require wiring listeners with event dispatcher, it makes it almost impossible to work with listeners that return values which cannot be interpreted as success or failure. This especially holds true for methods which allow for method chaining or implement fluent interface.
-
+While this design simplifies the process and __does not require wiring listeners with event dispatcher__, 
+it makes it problematic to work with listeners that return values which cannot be interpreted as 
+success or failure. This especially holds true for methods which allow for method chaining or implement 
+fluent interface. To work around this problem you can use `stop` and `ignoreReturnValue` methods on
+event context, though, that requires wiring your listener with event context. 
+Everything is a trade-off, someone once said.  
 ### Context
-Event context is simple data object holding information about the dispatchment process. See `Koriit\EventDispatcher\EventContextInterface` for more information.
+Event context is simple data object holding information about the dispatchment process. 
+See `Koriit\EventDispatcher\EventContextInterface` for more information.
 
 ### Parameters
 You can pass additional parameters to be used by invoker while injecting listener arguments by name.
@@ -235,8 +253,10 @@ function listener($event) {
 ```
 
 ### eventName, eventContext, eventDispatcher
-There are three parameters overridden and injected by event dispatcher itself:
+There are 3 parameters injected by event dispatcher itself:
 
 1. eventName - name of the event dispatched
 2. eventContext - reference to the context object of current dispatchment
 3. eventDispatcher - reference to the event dispatcher itself; this allows for nested dispatchments
+
+You cannot override them as using those keys in parameters array causes exception.

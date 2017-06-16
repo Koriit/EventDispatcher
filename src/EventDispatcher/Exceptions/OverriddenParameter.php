@@ -7,6 +7,6 @@
 
 namespace Koriit\EventDispatcher\Exceptions;
 
-class InvalidPriority extends \LogicException
+class OverriddenParameter extends \LogicException
 {
 }

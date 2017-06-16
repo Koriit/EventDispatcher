@@ -9,6 +9,7 @@ namespace Koriit\EventDispatcher;
 
 use DI\InvokerInterface;
 use Koriit\EventDispatcher\Exceptions\InvalidPriority;
+use Koriit\EventDispatcher\Exceptions\OverriddenParameter;
 
 /**
  * @author Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
@@ -40,6 +41,10 @@ class EventDispatcher implements EventDispatcherInterface
     public function dispatch($eventName, $parameters = [])
     {
         $eventContext = new EventContext($eventName);
+
+        if (isset($parameters['eventName']) || isset($parameters['eventContext']) || isset($parameters['eventDispatcher'])) {
+            throw new OverriddenParameter();
+        }
 
         if (!isset($this->listeners[$eventName])) {
             return $eventContext;
