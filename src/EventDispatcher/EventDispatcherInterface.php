@@ -34,7 +34,9 @@ interface EventDispatcherInterface
      *
      * @param mixed  $eventName
      * @param mixed  $listener
-     * @param number $priority
+     * @param integer $priority
+     *
+     * @return void
      */
     public function addListener($eventName, $listener, $priority = 0);
 
@@ -47,6 +49,8 @@ interface EventDispatcherInterface
      * At third level it is simple list containing listeners subscribed to given event with given priority.
      *
      * @param array $listeners
+     *
+     * @return void
      */
     public function addListeners($listeners);
 
@@ -59,6 +63,8 @@ interface EventDispatcherInterface
      *
      * @param mixed $eventName
      * @param mixed $listener
+     *
+     * @return void
      */
     public function removeListener($eventName, $listener);
 
