@@ -70,6 +70,16 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function should_allow_removing_listeners_for_nonexistent_events()
+    {
+        $eventName = 'mock';
+        $this->assertEmpty($this->dispatcher->getAllListeners());
+        $this->dispatcher->removeListener($eventName, self::$mockListener);
+    }
+
+    /**
+     * @test
+     */
     public function should_not_allow_negative_priority()
     {
         $this->setExpectedException(InvalidPriority::class);
