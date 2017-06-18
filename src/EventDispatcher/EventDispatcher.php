@@ -139,7 +139,7 @@ class EventDispatcher implements EventDispatcherInterface
 
     /**
      * @param EventContext $eventContext
-     * @param mixed $listener
+     * @param callable $listener
      * @param array $parameters
      */
     protected function invokeListener($eventContext, $listener, $parameters = [])
