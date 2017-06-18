@@ -152,7 +152,8 @@ class EventDispatcher implements EventDispatcherInterface
 
         if ($eventContext->isStopped()) {
             $eventContext->setStopValue(true);
-        } else if (!$eventContext->isReturnValueIgnored() && $returnValue) {
+            
+        } else if ($this->isStopValue($eventContext, $returnValue)) {
             $eventContext->setStopped(true);
             $eventContext->setStopValue($returnValue);
         }
@@ -193,5 +194,16 @@ class EventDispatcher implements EventDispatcherInterface
         if (!is_int($priority) || $priority < 0) {
             throw new InvalidPriority('Expected non-negative integer priority. Provided: ' . $priority);
         }
+    }
+
+    /**
+     * @param EventContext $eventContext
+     * @param mixed $returnValue
+     *
+     * @return bool
+     */
+    protected function isStopValue($eventContext, $returnValue)
+    {
+        return !$eventContext->isReturnValueIgnored() && $returnValue;
     }
 }
