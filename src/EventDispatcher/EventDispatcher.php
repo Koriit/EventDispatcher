@@ -7,6 +7,8 @@
 
 namespace Koriit\EventDispatcher;
 
+use function array_flip;
+use function array_intersect_key;
 use DI\InvokerInterface;
 use Koriit\EventDispatcher\Exceptions\InvalidPriority;
 use Koriit\EventDispatcher\Exceptions\OverriddenParameter;
@@ -66,11 +68,11 @@ class EventDispatcher implements EventDispatcherInterface
 
     public function addListeners($listeners)
     {
-        foreach ($listeners as $eventName => $listenersByPriority) {
-            foreach ($listenersByPriority as $priority => $newListeners) {
+        foreach ($listeners as $eventName => $eventListeners) {
+            foreach ($eventListeners as $priority => $listenersByPriority) {
                 $this->validatePriority($priority);
 
-                foreach ($newListeners as $listener) {
+                foreach ($listenersByPriority as $listener) {
                     $this->listeners[$eventName][$priority][] = $listener;
                 }
             }
@@ -117,6 +119,8 @@ class EventDispatcher implements EventDispatcherInterface
 
     /**
      * Sorts internal listeners array by priority.
+     *
+     * @return void
      */
     protected function sortListenersByPriority()
     {
@@ -135,6 +139,8 @@ class EventDispatcher implements EventDispatcherInterface
      * @param EventContext $eventContext
      * @param callable $listener
      * @param array $parameters
+     *
+     * @return void
      */
     protected function invokeListener($eventContext, $listener, $parameters = [])
     {
@@ -159,12 +165,16 @@ class EventDispatcher implements EventDispatcherInterface
     /**
      * Injects predefined disptacher objects into parameters array.
      *
-     * @param EventContextInterface $eventContext
+     * @param EventContext $eventContext
      * @param array $parameters
+     *
+     * @throws OverriddenParameter
+     *
+     * @return void
      */
     protected function injectDispatcherParameters($eventContext, &$parameters)
     {
-        if (isset($parameters['eventName']) || isset($parameters['eventContext']) || isset($parameters['eventDispatcher'])) {
+        if(array_intersect_key($parameters, array_flip(['eventName', 'eventContext', 'eventDispatcher']))) {
             throw new OverriddenParameter('Following parameters cannot be passed in parameters array: eventName, eventContext, eventDispatcher.');
         }
 
@@ -175,6 +185,10 @@ class EventDispatcher implements EventDispatcherInterface
 
     /**
      * @param mixed $priority
+     *
+     * @throws InvalidPriority
+     *
+     * @return void
      */
     protected function validatePriority($priority)
     {

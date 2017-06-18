@@ -87,17 +87,6 @@ class EventContext implements EventContextInterface
         return $this->stopValue;
     }
 
-    /**
-     * Sets the value which stopped the dispatchment chain.
-     *
-     * @param mixed $stopValue
-     * @return void
-     */
-    public function setStopValue($stopValue)
-    {
-        $this->stopValue = $stopValue;
-    }
-
     public function ignoreReturnValue($switch)
     {
         $this->ignoreReturnValue = $switch;
@@ -111,5 +100,17 @@ class EventContext implements EventContextInterface
     public function stop()
     {
         $this->stopped = true;
+    }
+
+    /**
+     * Sets the value which stopped the dispatchment chain.
+     *
+     * @param mixed $stopValue
+     *
+     * @return void
+     */
+    public function setStopValue($stopValue)
+    {
+        $this->stopValue = $stopValue;
     }
 }
