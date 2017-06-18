@@ -99,15 +99,11 @@ class EventDispatcher implements EventDispatcherInterface
             $key = array_search($listener, $listeners, true);
             if ($key !== false) {
                 unset($this->listeners[$eventName][$priority][$key]);
-                if (empty($this->listeners[$eventName][$priority])) {
-                    unset($this->listeners[$eventName][$priority]);
-                }
+                $this->removeEmptyItem($this->listeners[$eventName], $priority);
             }
         }
 
-        if (empty($this->listeners[$eventName])) {
-            unset($this->listeners[$eventName]);
-        }
+        $this->removeEmptyItem($this->listeners, $eventName);
     }
 
     public function hasListeners($eventName = null)
@@ -152,7 +148,7 @@ class EventDispatcher implements EventDispatcherInterface
 
         if ($eventContext->isStopped()) {
             $eventContext->setStopValue(true);
-            
+
         } else if ($this->isStopValue($eventContext, $returnValue)) {
             $eventContext->setStopped(true);
             $eventContext->setStopValue($returnValue);
@@ -205,5 +201,18 @@ class EventDispatcher implements EventDispatcherInterface
     protected function isStopValue($eventContext, $returnValue)
     {
         return !$eventContext->isReturnValueIgnored() && $returnValue;
+    }
+
+    /**
+     * Removes an item by key from the array if it is considered to be empty.
+     *
+     * @param array $array
+     * @param mixed $key
+     */
+    protected function removeEmptyItem(&$array, $key)
+    {
+        if (empty($array[$key])) {
+            unset($array[$key]);
+        }
     }
 }
