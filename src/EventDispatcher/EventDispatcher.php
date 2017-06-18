@@ -31,7 +31,7 @@ class EventDispatcher implements EventDispatcherInterface
      *
      * @var bool
      */
-    protected $sorted = true;
+    protected $listenersSorted = true;
 
     public function __construct(InvokerInterface $invoker)
     {
@@ -41,26 +41,15 @@ class EventDispatcher implements EventDispatcherInterface
     public function dispatch($eventName, $parameters = [])
     {
         $eventContext = new EventContext($eventName);
+        $this->injectDispatcherParameters($eventContext, $parameters);
 
-        if (isset($parameters['eventName']) || isset($parameters['eventContext']) || isset($parameters['eventDispatcher'])) {
-            throw new OverriddenParameter();
-        }
-
-        if (!isset($this->listeners[$eventName])) {
-            return $eventContext;
-        }
-
-        if (!$this->sorted) {
+        if (isset($this->listeners[$eventName])) {
             $this->sortListenersByPriority();
-        }
 
-        $parameters['eventName'] = $eventName;
-        $parameters['eventContext'] = $eventContext;
-        $parameters['eventDispatcher'] = $this;
-
-        foreach ($this->listeners[$eventName] as $listeners) {
-            foreach ($listeners as $listener) {
-                $this->invokeListener($eventContext, $listener, $parameters);
+            foreach ($this->listeners[$eventName] as $listenersByPriority) {
+                foreach ($listenersByPriority as $listener) {
+                    $this->invokeListener($eventContext, $listener, $parameters);
+                }
             }
         }
 
@@ -69,21 +58,17 @@ class EventDispatcher implements EventDispatcherInterface
 
     public function addListener($eventName, $listener, $priority = 0)
     {
-        if (!is_int($priority) || $priority < 0) {
-            throw new InvalidPriority('Expected non-negative integer priority. Provided: ' . $priority);
-        }
+        $this->validatePriority($priority);
 
         $this->listeners[$eventName][$priority][] = $listener;
-        $this->sorted = false;
+        $this->listenersSorted = false;
     }
 
     public function addListeners($listeners)
     {
         foreach ($listeners as $eventName => $listenersByPriority) {
             foreach ($listenersByPriority as $priority => $newListeners) {
-                if (!is_int($priority) || $priority < 0) {
-                    throw new InvalidPriority('Expected non-negative integer priority. Provided: ' . $priority);
-                }
+                $this->validatePriority($priority);
 
                 foreach ($newListeners as $listener) {
                     $this->listeners[$eventName][$priority][] = $listener;
@@ -91,7 +76,7 @@ class EventDispatcher implements EventDispatcherInterface
             }
         }
 
-        $this->sorted = false;
+        $this->listenersSorted = false;
     }
 
     public function getListeners($eventName)
@@ -111,7 +96,8 @@ class EventDispatcher implements EventDispatcherInterface
         }
 
         foreach ($this->listeners[$eventName] as $priority => $listeners) {
-            if (false !== ($key = array_search($listener, $listeners, true))) {
+            $key = array_search($listener, $listeners, true);
+            if ($key !== false) {
                 unset($this->listeners[$eventName][$priority][$key]);
                 if (empty($this->listeners[$eventName][$priority])) {
                     unset($this->listeners[$eventName][$priority]);
@@ -129,12 +115,20 @@ class EventDispatcher implements EventDispatcherInterface
         return $eventName !== null ? !empty($this->listeners[$eventName]) : !empty($this->listeners);
     }
 
+    /**
+     * Sorts internal listeners array by priority.
+     */
     protected function sortListenersByPriority()
     {
+        if ($this->listenersSorted) {
+            return;
+        }
+
         foreach (array_keys($this->listeners) as $eventName) {
             ksort($this->listeners[$eventName]);
         }
-        $this->sorted = true;
+
+        $this->listenersSorted = true;
     }
 
     /**
@@ -146,17 +140,46 @@ class EventDispatcher implements EventDispatcherInterface
     {
         if ($eventContext->isStopped()) {
             $eventContext->addStoppedListener($listener);
-        } else {
-            $eventContext->ignoreReturnValue(false);
-            $result = $this->invoker->call($listener, $parameters);
-            if ($eventContext->isStopped()) {
-                $eventContext->setStopValue(true);
-            } else if (!$eventContext->isReturnValueIgnored() && $result) {
-                $eventContext->setStopped(true);
-                $eventContext->setStopValue($result);
-            }
+            return;
+        }
 
-            $eventContext->addExecutedListener($listener);
+        $eventContext->ignoreReturnValue(false);
+        $returnValue = $this->invoker->call($listener, $parameters);
+
+        if ($eventContext->isStopped()) {
+            $eventContext->setStopValue(true);
+        } else if (!$eventContext->isReturnValueIgnored() && $returnValue) {
+            $eventContext->setStopped(true);
+            $eventContext->setStopValue($returnValue);
+        }
+
+        $eventContext->addExecutedListener($listener);
+    }
+
+    /**
+     * Injects predefined disptacher objects into parameters array.
+     *
+     * @param EventContextInterface $eventContext
+     * @param array $parameters
+     */
+    protected function injectDispatcherParameters($eventContext, &$parameters)
+    {
+        if (isset($parameters['eventName']) || isset($parameters['eventContext']) || isset($parameters['eventDispatcher'])) {
+            throw new OverriddenParameter('Following parameters cannot be passed in parameters array: eventName, eventContext, eventDispatcher.');
+        }
+
+        $parameters['eventName'] = $eventContext->getEventName();
+        $parameters['eventContext'] = $eventContext;
+        $parameters['eventDispatcher'] = $this;
+    }
+
+    /**
+     * @param mixed $priority
+     */
+    protected function validatePriority($priority)
+    {
+        if (!is_int($priority) || $priority < 0) {
+            throw new InvalidPriority('Expected non-negative integer priority. Provided: ' . $priority);
         }
     }
 }
