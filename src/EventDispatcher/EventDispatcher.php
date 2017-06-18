@@ -60,20 +60,7 @@ class EventDispatcher implements EventDispatcherInterface
 
         foreach ($this->listeners[$eventName] as $listeners) {
             foreach ($listeners as $listener) {
-                if ($eventContext->isStopped()) {
-                    $eventContext->addStoppedListener($listener);
-                } else {
-                    $eventContext->ignoreReturnValue(false);
-                    $result = $this->invoker->call($listener, $parameters);
-                    if ($eventContext->isStopped()) {
-                        $eventContext->setStopValue(true);
-                    } else if (!$eventContext->isReturnValueIgnored() && $result) {
-                        $eventContext->setStopped(true);
-                        $eventContext->setStopValue($result);
-                    }
-
-                    $eventContext->addExecutedListener($listener);
-                }
+                $this->invokeListener($eventContext, $listener, $parameters);
             }
         }
 
@@ -148,5 +135,28 @@ class EventDispatcher implements EventDispatcherInterface
             ksort($this->listeners[$eventName]);
         }
         $this->sorted = true;
+    }
+
+    /**
+     * @param EventContext $eventContext
+     * @param mixed $listener
+     * @param array $parameters
+     */
+    protected function invokeListener($eventContext, $listener, $parameters = [])
+    {
+        if ($eventContext->isStopped()) {
+            $eventContext->addStoppedListener($listener);
+        } else {
+            $eventContext->ignoreReturnValue(false);
+            $result = $this->invoker->call($listener, $parameters);
+            if ($eventContext->isStopped()) {
+                $eventContext->setStopValue(true);
+            } else if (!$eventContext->isReturnValueIgnored() && $result) {
+                $eventContext->setStopped(true);
+                $eventContext->setStopValue($result);
+            }
+
+            $eventContext->addExecutedListener($listener);
+        }
     }
 }
