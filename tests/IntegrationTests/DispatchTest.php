@@ -203,7 +203,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $param
      */
-    public function should_throw_when_parameters_overridden($param)
+    public function should_throw_when_parameters_overridden_without_listeners($param)
     {
         $this->setExpectedException(OverriddenParameter::class);
 
@@ -216,7 +216,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $param
      */
-    public function should_throw_when_parameters_overridden_without_listeners($param)
+    public function should_throw_when_parameters_overridden($param)
     {
         $this->setExpectedException(OverriddenParameter::class);
 
