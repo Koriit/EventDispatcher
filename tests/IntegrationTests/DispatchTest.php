@@ -3,8 +3,8 @@
 namespace Koriit\EventDispatcher\Test\IntegrationTests;
 
 use DI\ContainerBuilder;
-use Koriit\EventDispatcher\EventDispatcher;
 use Koriit\EventDispatcher\EventContextInterface;
+use Koriit\EventDispatcher\EventDispatcher;
 use Koriit\EventDispatcher\EventDispatcherInterface;
 use Koriit\EventDispatcher\Exceptions\OverriddenParameter;
 use Koriit\EventDispatcher\Test\Fixtures\FakeClass;
@@ -219,7 +219,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
      * @dataProvider overriddenParametersProvider
      *
      * @param string $param
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function should_throw_when_parameters_overridden_without_listeners($param, $value)
     {

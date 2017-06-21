@@ -134,6 +134,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 
         $this->dispatcher->addListeners($listeners);
     }
+
     /**
      * @test
      * @dataProvider bulkListenersProvider

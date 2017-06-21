@@ -131,8 +131,8 @@ class EventDispatcher implements EventDispatcherInterface
 
     /**
      * @param EventContext $eventContext
-     * @param callable $listener
-     * @param array $parameters
+     * @param callable     $listener
+     * @param array        $parameters
      *
      * @return void
      */
@@ -140,6 +140,7 @@ class EventDispatcher implements EventDispatcherInterface
     {
         if ($eventContext->isStopped()) {
             $eventContext->addStoppedListener($listener);
+
             return;
         }
 
@@ -148,8 +149,7 @@ class EventDispatcher implements EventDispatcherInterface
 
         if ($eventContext->isStopped()) {
             $eventContext->setStopValue(true);
-
-        } else if ($this->isStopValue($eventContext, $returnValue)) {
+        } elseif ($this->isStopValue($eventContext, $returnValue)) {
             $eventContext->setStopped(true);
             $eventContext->setStopValue($returnValue);
         }
@@ -161,7 +161,7 @@ class EventDispatcher implements EventDispatcherInterface
      * Injects predefined disptacher objects into parameters array.
      *
      * @param EventContext $eventContext
-     * @param array $parameters
+     * @param array        $parameters
      *
      * @throws OverriddenParameter
      *
@@ -194,7 +194,7 @@ class EventDispatcher implements EventDispatcherInterface
 
     /**
      * @param EventContext $eventContext
-     * @param mixed $returnValue
+     * @param mixed        $returnValue
      *
      * @return bool
      */

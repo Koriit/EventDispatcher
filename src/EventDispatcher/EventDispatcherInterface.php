@@ -34,7 +34,7 @@ interface EventDispatcherInterface
      *
      * @param mixed $eventName
      * @param mixed $listener
-     * @param integer $priority
+     * @param int   $priority
      *
      * @return void
      */

@@ -3,8 +3,8 @@
 namespace Koriit\EventDispatcher\Test\IntegrationTests;
 
 use DI\ContainerBuilder;
-use Koriit\EventDispatcher\EventDispatcher;
 use Koriit\EventDispatcher\EventContextInterface;
+use Koriit\EventDispatcher\EventDispatcher;
 use Koriit\EventDispatcher\EventDispatcherInterface;
 
 class ReturnContextTest extends \PHPUnit_Framework_TestCase
@@ -153,6 +153,7 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
     {
         $listener1 = function ($eventContext) {
             $eventContext->stop();
+
             return 'TruthValue';
         };
 

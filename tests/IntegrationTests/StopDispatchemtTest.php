@@ -2,7 +2,6 @@
 
 namespace Koriit\EventDispatcher\Test\IntegrationTests;
 
-
 use DI\ContainerBuilder;
 use Koriit\EventDispatcher\EventDispatcher;
 use Koriit\EventDispatcher\EventDispatcherInterface;
@@ -59,6 +58,7 @@ class StopDispatchemtTest extends \PHPUnit_Framework_TestCase
     {
         $listener = function ($eventContext) {
             $eventContext->ignoreReturnValue(true);
+
             return true;
         };
         $eventName = 'mock';
@@ -78,6 +78,7 @@ class StopDispatchemtTest extends \PHPUnit_Framework_TestCase
         $listener = function ($eventContext) {
             $eventContext->ignoreReturnValue(true);
             $eventContext->stop();
+
             return 'TruthValue';
         };
         $eventName = 'mock';
@@ -96,6 +97,7 @@ class StopDispatchemtTest extends \PHPUnit_Framework_TestCase
     {
         $listener = function ($eventContext) {
             $eventContext->ignoreReturnValue(true);
+
             return 'TruthValue';
         };
         $listener2 = function ($eventContext) {

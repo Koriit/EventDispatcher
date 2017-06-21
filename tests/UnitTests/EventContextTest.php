@@ -99,6 +99,4 @@ class EventContextTest extends \PHPUnit_Framework_TestCase
         $this->context->ignoreReturnValue(false);
         $this->assertFalse($this->context->isReturnValueIgnored());
     }
-
-
 }
