@@ -8,10 +8,10 @@
 		 beStrictAboutTestsThatDoNotTestAnything="true"
 	     colors="true">
 	<testsuites>
-		<testsuite name="unit">
+		<testsuite name="Unit Test Suite">
 			<directory>./tests/UnitTests</directory>
 		</testsuite>
-		<testsuite name="integration">
+		<testsuite name="Integration Test Suite">
 			<directory>./tests/IntegrationTests</directory>
 		</testsuite>
 	</testsuites>

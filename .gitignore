@@ -1,6 +1,7 @@
-# PHP-ED files
+# library files
 /vendor/
 /composer.lock
+/phpunit.xml
 
 # Eclipse files
 /.buildpath
