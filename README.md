@@ -3,6 +3,7 @@ EventDispatcher
 [![Build Status](https://travis-ci.org/Koriit/EventDispatcher.svg?branch=master)](https://travis-ci.org/Koriit/EventDispatcher)
 [![Coverage Status](https://coveralls.io/repos/github/Koriit/EventDispatcher/badge.svg?branch=master)](https://coveralls.io/github/Koriit/EventDispatcher?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Koriit/EventDispatcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Koriit/EventDispatcher/?branch=master)
+[![StyleCI](https://styleci.io/repos/77447943/shield?branch=master)](https://styleci.io/repos/77447943)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/e22b54a9-b2ce-4b42-8b6b-5f562218da34/mini.png)](https://insight.sensiolabs.com/projects/e22b54a9-b2ce-4b42-8b6b-5f562218da34) 
 
 [![Latest Stable Version](https://poser.pugx.org/koriit/eventdispatcher/v/stable)](https://packagist.org/packages/koriit/eventdispatcher)
