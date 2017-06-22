@@ -219,7 +219,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
      * @dataProvider overriddenParametersProvider
      *
      * @param string $param Parameter name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function shouldThrowWhenParametersOverriddenWithoutListeners($param, $value)
     {
