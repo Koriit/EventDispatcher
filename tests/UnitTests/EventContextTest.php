@@ -33,7 +33,7 @@ class EventContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_return_proper_name()
+    public function shouldReturnProperName()
     {
         $this->assertEquals($this->eventName, $this->context->getEventName());
     }
@@ -41,7 +41,7 @@ class EventContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_allow_adding_executed_listeners()
+    public function shouldAllowAddingExecutedListeners()
     {
         $this->context->addExecutedListener($this->mockListener);
 
@@ -51,7 +51,7 @@ class EventContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_allow_adding_stopped_listeners()
+    public function shouldAllowAddingStoppedListeners()
     {
         $this->context->addStoppedListener($this->mockListener);
 
@@ -61,7 +61,7 @@ class EventContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_not_be_stopped_by_default()
+    public function shouldNotBeStoppedByDefault()
     {
         $this->assertFalse($this->context->isStopped());
     }
@@ -69,7 +69,7 @@ class EventContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_allow_stopping_event()
+    public function shouldAllowStoppingEvent()
     {
         $this->context->setStopped(true);
 
@@ -80,18 +80,21 @@ class EventContextTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @depends should_allow_stopping_event
+     * @depends shouldAllowStoppingEvent
      *
      * @param EventContext $context
      */
-    public function should_allow_resuming_event($context)
+    public function shouldAllowResumingEvent($context)
     {
         $context->setStopped(false);
 
         $this->assertFalse($context->isStopped());
     }
 
-    public function should_allow_ignoring_return_value()
+    /**
+     * @test
+     */
+    public function shouldAllowIgnoringReturnValue()
     {
         $this->context->ignoreReturnValue(true);
         $this->assertTrue($this->context->isReturnValueIgnored());

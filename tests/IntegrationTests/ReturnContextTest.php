@@ -23,7 +23,7 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_return_context()
+    public function shouldReturnContext()
     {
         $listener = function () {
         };
@@ -38,7 +38,7 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_contain_stop_value_in_context()
+    public function shouldContainStopValueInContext()
     {
         $listener = function () {
             return 'StopValue';
@@ -54,7 +54,7 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_execute_all_listeners_if_none_returns_truth()
+    public function shouldExecuteAllListenersIfNoneReturnsTruth()
     {
         $listener1 = function () {
         };
@@ -77,7 +77,7 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_stop_after_first_listener_returning_truth()
+    public function shouldStopAfterFirstListenerReturningTruth()
     {
         $listener1 = function () {
         };
@@ -104,7 +104,7 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_stop_after_context_stop()
+    public function shouldStopAfterContextStop()
     {
         $listener1 = function () {
         };
@@ -130,9 +130,9 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @depends should_stop_after_context_stop
+     * @depends shouldStopAfterContextStop
      */
-    public function should_set_stop_value_to_true_after_context_stop()
+    public function shouldSetStopValueToTrueAfterContextStop()
     {
         $listener1 = function ($eventContext) {
             $eventContext->stop();
@@ -147,9 +147,9 @@ class ReturnContextTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @depends should_stop_after_context_stop
+     * @depends shouldStopAfterContextStop
      */
-    public function should_set_stop_value_to_true_after_context_stop_even_with_return_value()
+    public function shouldSetStopValueToTrueAfterContextStopEvenWithReturnValue()
     {
         $listener1 = function ($eventContext) {
             $eventContext->stop();

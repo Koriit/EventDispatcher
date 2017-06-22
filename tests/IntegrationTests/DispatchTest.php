@@ -27,7 +27,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      */
-    public function should_not_fail_without_listeners()
+    public function shouldNotFailWithoutListeners()
     {
         $eventName = 'mock';
         $context = $this->dispatcher->dispatch($eventName);
@@ -38,7 +38,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_allow_repeated_dispatchments()
+    public function shouldAllowRepeatedDispatchments()
     {
         $eventName = 'mock';
         $listener = function () {
@@ -55,7 +55,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_execute_listeners_on_dispatch()
+    public function shouldExecuteListenersOnDispatch()
     {
         $eventName = 'mock';
         $listener = function () {
@@ -74,7 +74,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_execute_only_event_listeners()
+    public function shouldExecuteOnlyEventListeners()
     {
         $eventName = 'mock';
         $listener = function () {
@@ -95,7 +95,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_execute_listeners_by_priority()
+    public function shouldExecuteListenersByPriority()
     {
         $eventName = 'mock';
         $listener = function () {
@@ -115,7 +115,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_execute_listeners_by_priority_with_bulk()
+    public function shouldExecuteListenersByPriorityWithBulk()
     {
         $eventName = 'mock';
 
@@ -143,7 +143,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_inject_event_name()
+    public function shouldInjectEventName()
     {
         $eventName = 'mock';
         $test = $this;
@@ -157,7 +157,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_inject_self()
+    public function shouldInjectSelf()
     {
         $eventName = 'mock';
         $test = $this;
@@ -172,7 +172,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_inject_event_context()
+    public function shouldInjectEventContext()
     {
         $eventName = 'mock';
         $test = $this;
@@ -186,7 +186,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_inject_dependencies()
+    public function shouldInjectDependencies()
     {
         $eventName = 'mock';
         $test = $this;
@@ -200,7 +200,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_inject_parameters()
+    public function shouldInjectParameters()
     {
         $eventName = 'mock';
         $mockParam = 'mockParam';
@@ -221,7 +221,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
      * @param string $param
      * @param mixed  $value
      */
-    public function should_throw_when_parameters_overridden_without_listeners($param, $value)
+    public function shouldThrowWhenParametersOverriddenWithoutListeners($param, $value)
     {
         $this->setExpectedException(OverriddenParameter::class);
 
@@ -234,7 +234,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $param
      */
-    public function should_throw_when_parameters_overridden($param)
+    public function shouldThrowWhenParametersOverridden($param)
     {
         $this->setExpectedException(OverriddenParameter::class);
 

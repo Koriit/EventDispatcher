@@ -30,7 +30,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_allow_adding_listeners()
+    public function shouldAllowAddingListeners()
     {
         $eventName = 'mock';
         $this->dispatcher->addListener($eventName, self::$mockListener);
@@ -49,9 +49,9 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @depends should_allow_adding_listeners
+     * @depends shouldAllowAddingListeners
      */
-    public function should_allow_removing_listeners()
+    public function shouldAllowRemovingListeners()
     {
         $eventName = 'mock';
         $this->dispatcher->addListener($eventName, self::$mockListener);
@@ -70,7 +70,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_allow_removing_listeners_for_nonexistent_events()
+    public function shouldAllowRemovingListenersForNonexistentEvents()
     {
         $eventName = 'mock';
         $this->assertEmpty($this->dispatcher->getAllListeners());
@@ -80,7 +80,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_not_allow_negative_priority()
+    public function shouldNotAllowNegativePriority()
     {
         $this->setExpectedException(InvalidPriority::class);
 
@@ -90,7 +90,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_allow_only_integer_priority()
+    public function shouldAllowOnlyIntegerPriority()
     {
         $this->setExpectedException(InvalidPriority::class);
 
@@ -100,7 +100,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_not_allow_negative_priority_with_bulk()
+    public function shouldNotAllowNegativePriorityWithBulk()
     {
         $this->setExpectedException(InvalidPriority::class);
 
@@ -119,7 +119,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_allow_only_integer_priority_with_bulk()
+    public function shouldAllowOnlyIntegerPriorityWithBulk()
     {
         $this->setExpectedException(InvalidPriority::class);
 
@@ -139,7 +139,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider bulkListenersProvider
      */
-    public function should_allow_adding_bulk_listeners($manualListeners, $bulkListeners, $expected)
+    public function shouldAllowAddingBulkListeners($manualListeners, $bulkListeners, $expected)
     {
         foreach ($manualListeners as $eventName => $byPriority) {
             foreach ($byPriority as $priority => $listeners) {

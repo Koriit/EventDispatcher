@@ -22,7 +22,7 @@ class StopDispatchemtTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_stop_with_truth_return()
+    public function shouldStopWithTruthReturn()
     {
         $listener = function () {
             return 'StopTruth';
@@ -38,7 +38,7 @@ class StopDispatchemtTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_stop_with_context()
+    public function shouldStopWithContext()
     {
         $listener = function ($eventContext) {
             $eventContext->stop();
@@ -54,7 +54,7 @@ class StopDispatchemtTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should_allow_ignoring_return_value()
+    public function shouldAllowIgnoringReturnValue()
     {
         $listener = function ($eventContext) {
             $eventContext->ignoreReturnValue(true);
@@ -71,9 +71,9 @@ class StopDispatchemtTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @depends should_allow_ignoring_return_value
+     * @depends shouldAllowIgnoringReturnValue
      */
-    public function should_allow_context_stop_while_ignoring_return_value()
+    public function shouldAllowContextStopWhileIgnoringReturnValue()
     {
         $listener = function ($eventContext) {
             $eventContext->ignoreReturnValue(true);
@@ -91,9 +91,9 @@ class StopDispatchemtTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @depends should_allow_ignoring_return_value
+     * @depends shouldAllowIgnoringReturnValue
      */
-    public function should_ignore_return_value_only_for_current_listener()
+    public function shouldIgnoreReturnValueOnlyForCurrentListener()
     {
         $listener = function ($eventContext) {
             $eventContext->ignoreReturnValue(true);
