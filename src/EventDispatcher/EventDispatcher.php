@@ -170,7 +170,7 @@ class EventDispatcher implements EventDispatcherInterface
     protected function injectDispatcherParameters($eventContext, &$parameters)
     {
         $intersect = \array_intersect_key(\array_flip(['eventName', 'eventContext', 'eventDispatcher']), $parameters);
-        if ($intersect) {
+        if (!empty($intersect)) {
             throw new OverriddenParameter('Parameters array cannot contain: ' . implode(', ', \array_flip($intersect)));
         }
 
