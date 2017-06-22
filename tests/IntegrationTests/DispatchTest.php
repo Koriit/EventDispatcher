@@ -218,8 +218,8 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider overriddenParametersProvider
      *
-     * @param string $param
-     * @param mixed  $value
+     * @param string $param Parameter name
+     * @param mixed $value
      */
     public function shouldThrowWhenParametersOverriddenWithoutListeners($param, $value)
     {
@@ -232,7 +232,7 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider overriddenParametersProvider
      *
-     * @param string $param
+     * @param string $param Parameter name
      */
     public function shouldThrowWhenParametersOverridden($param)
     {
@@ -246,6 +246,20 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
         $this->dispatcher->dispatch($eventName, [$param => $param]);
     }
 
+    /**
+     * @test
+     * @dataProvider overriddenParametersPermutationsProvider
+     *
+     * @param array $params Array of parameter names
+     */
+    public function overriddenParametersExceptionShouldContainOnlyPassedParams($params)
+    {
+        $message = 'Parameters array cannot contain: ' . implode(', ', $params);
+        $this->setExpectedException(OverriddenParameter::class, $message);
+
+        $this->dispatcher->dispatch('mockEvent', \array_flip($params));
+    }
+
     public function overriddenParametersProvider()
     {
         return [
@@ -255,6 +269,19 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
             ['eventContext', null],
             ['eventDispatcher', 'non-null'],
             ['eventDispatcher', null],
+        ];
+    }
+
+    public function overriddenParametersPermutationsProvider()
+    {
+        return [
+            [['eventName']],
+            [['eventContext']],
+            [['eventDispatcher']],
+            [['eventName', 'eventDispatcher']],
+            [['eventName', 'eventContext']],
+            [['eventContext', 'eventDispatcher']],
+            [['eventName', 'eventContext', 'eventDispatcher']],
         ];
     }
 }
