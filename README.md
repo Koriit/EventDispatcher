@@ -131,7 +131,7 @@ interface EventDispatcherInterface
    *
    * @param mixed  $eventName
    * @param mixed  $listener
-   * @param number $priority
+   * @param int    $priority
    */
   public function addListener($eventName, $listener, $priority = 0);
 
