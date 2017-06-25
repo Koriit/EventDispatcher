@@ -260,6 +260,13 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
         $this->dispatcher->dispatch('mockEvent', \array_flip($params));
     }
 
+    /**
+     * Provides:
+     * 1. Overridden parameter name.
+     * 2. Value of overridden parameter.
+     *
+     * @return array Test cases
+     */
     public function overriddenParametersProvider()
     {
         return [
@@ -272,6 +279,12 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    /**
+     * Provides:
+     * 1. Array being combination of overridden parameter names.
+     *
+     * @return array Test cases
+     */
     public function overriddenParametersPermutationsProvider()
     {
         return [

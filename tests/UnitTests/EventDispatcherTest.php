@@ -138,6 +138,10 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider bulkListenersProvider
+     *
+     * @param array $manualListeners
+     * @param array $bulkListeners
+     * @param array $expected
      */
     public function shouldAllowAddingBulkListeners($manualListeners, $bulkListeners, $expected)
     {
@@ -153,6 +157,14 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->dispatcher->getAllListeners());
     }
 
+    /**
+     * Provides:
+     * 1. Listeners to be added manually.
+     * 2. Listeners to be added in bulk.
+     * 3. How final listeners array should look like.
+     *
+     * @return array Test cases
+     */
     public function bulkListenersProvider()
     {
         return [
