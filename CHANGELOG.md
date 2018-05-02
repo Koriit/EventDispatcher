@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.0] - 2018-05-02
 ### Changed
 - Moved to PHP-DI 6
 
@@ -26,5 +26,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - It's now possible to ignore the value returned by listener with context.
 - It's now possible to stop the dispatchment with context.
 
-[Unreleased]: https://github.com/Koriit/EventDispatcher/compare/v1.0.1...HEAD
+[2.0.0]: https://github.com/Koriit/EventDispatcher/compare/v1.0.1...v2.0.0
 [1.0.1]: https://github.com/Koriit/EventDispatcher/compare/v1.0.0...v1.0.1
