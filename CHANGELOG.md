@@ -5,8 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [2.0.0] - 2018-05-02
+### Added
+- Added support for PHP 7.2(should have been already working)
+
 ### Changed
 - Moved to PHP-DI 6
+
+### Removed
+- Removed support for PHP 5.6 and 5.5(consequence of moving to PHP-DI 6)
 
 ## [1.0.1] - 2017-06-24
 ### Fixed
