@@ -1,19 +1,19 @@
 <?php
 
 /**
- * @copyright 2017 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
- * @license MIT License, see license file distributed with this source code
+ * @copyright 2018 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
+ * @license   MIT License, see license file distributed with this source code
  */
 
 namespace Koriit\EventDispatcher;
 
-use DI\InvokerInterface;
+use Invoker\Exception\InvocationException;
+use Invoker\Exception\NotCallableException;
+use Invoker\Exception\NotEnoughParametersException;
+use Invoker\InvokerInterface;
 use Koriit\EventDispatcher\Exceptions\InvalidPriority;
 use Koriit\EventDispatcher\Exceptions\OverriddenParameter;
 
-/**
- * @author Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
- */
 class EventDispatcher implements EventDispatcherInterface
 {
     /**
@@ -134,6 +134,10 @@ class EventDispatcher implements EventDispatcherInterface
      * @param callable     $listener
      * @param array        $parameters
      *
+     * @throws InvocationException
+     * @throws NotCallableException
+     * @throws NotEnoughParametersException
+     *
      * @return void
      */
     protected function invokeListener($eventContext, $listener, $parameters = [])
@@ -158,7 +162,7 @@ class EventDispatcher implements EventDispatcherInterface
     }
 
     /**
-     * Injects predefined disptacher objects into parameters array.
+     * Injects predefined dispatcher objects into parameters array.
      *
      * @param EventContext $eventContext
      * @param array        $parameters

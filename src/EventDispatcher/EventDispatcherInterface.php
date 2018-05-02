@@ -1,16 +1,18 @@
 <?php
 
 /**
- * @copyright 2017 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
- * @license MIT License, see license file distributed with this source code
+ * @copyright 2018 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
+ * @license   MIT License, see license file distributed with this source code
  */
 
 namespace Koriit\EventDispatcher;
 
+use Invoker\Exception\InvocationException;
+use Invoker\Exception\NotCallableException;
+use Invoker\Exception\NotEnoughParametersException;
+
 /**
  * Event dispatcher allows you to notify listeners subscribed to an event.
- *
- * @author Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
  */
 interface EventDispatcherInterface
 {
@@ -19,6 +21,10 @@ interface EventDispatcherInterface
      *
      * @param mixed $eventName
      * @param array $parameters
+     *
+     * @throws InvocationException
+     * @throws NotCallableException
+     * @throws NotEnoughParametersException
      *
      * @return EventContextInterface
      */
