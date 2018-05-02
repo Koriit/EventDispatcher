@@ -1,16 +1,14 @@
 <?php
 
 /**
- * @copyright 2017 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
- * @license MIT License, see license file distributed with this source code
+ * @copyright 2018 Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
+ * @license   MIT License, see license file distributed with this source code
  */
 
 namespace Koriit\EventDispatcher;
 
 /**
  * Event context stores information about the event being dispatched and the dispatchment itself.
- *
- * @author Aleksander Stelmaczonek <al.stelmaczonek@gmail.com>
  */
 interface EventContextInterface
 {

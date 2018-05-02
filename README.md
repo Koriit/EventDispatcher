@@ -1,5 +1,5 @@
 EventDispatcher
------
+---------------
 [![Build Status](https://travis-ci.org/Koriit/EventDispatcher.svg?branch=master)](https://travis-ci.org/Koriit/EventDispatcher)
 [![Coverage Status](https://coveralls.io/repos/github/Koriit/EventDispatcher/badge.svg?branch=master)](https://coveralls.io/github/Koriit/EventDispatcher?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Koriit/EventDispatcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Koriit/EventDispatcher/?branch=master)
@@ -11,11 +11,13 @@ EventDispatcher
 
 Simple event dispatcher based on [PHP-DI](http://php-di.org).
 
-This library **does not** aim to be general purpose library or cover all your possible needs. 
+This library **does not** aim to be general purpose library or to cover all possible use cases. 
 What this library **does** aim to be is perfect choice for those who use PHP-DI and prefer 
 to use [PHP Definitions](http://php-di.org/doc/php-definitions.html).
 
-The goal is to create as decoupled code as possible. The code that uses the dispatcher may not know its listeners, and the other way around, the listeners may not even know that they are actually used as listeners!
+The goal is to create as decoupled code as possible. The code that uses the dispatcher may not 
+know its listeners, and the other way around, the listeners may not even know that they are 
+actually used as listeners!
 
 Install
 -------
@@ -26,6 +28,14 @@ EventDispatcher is available via composer:
 composer require koriit/eventdispatcher
 ```
 
+Versions
+--------
+This library depends on PHP-DI and is thus affected by compatibility breaks coming from it.
+
+### v2
+Tested with PHP-DI ^6.0.
+
+### v1
 Tested with PHP-DI ^5.4.
 
 Usage
@@ -96,9 +106,9 @@ class MyClass implements MyInterface
 
 $dispatcher = $container->get(EventDispatcherInterface::class);
 
-$dispatcher->addListener(ApplicationLifecycle::INITIALIZING, [MyInterface::class, 'logRequest'], 10);
+$dispatcher->addListener(InitializationEvent::class, [MyInterface::class, 'logRequest'], 10);
 
-$dispatcher->dispatch(ApplicationLifecycle::INITIALIZING);
+$dispatcher->dispatch(InitializationEvent::class, ["event" => new InitializationEvent()]);
 ```
 For above example to work you need to configure a definition for *MyInterface*, of course.
 
@@ -148,23 +158,26 @@ interface EventDispatcherInterface
   // ..
 
   /**
-   * Subscribes listeners en masse.
-   *
-   * Listeners array is simple structure of 3 levels.
-   * At first level it is associative array where keys are names of registered events.
-   * At second level it is indexed array where keys are priority values.
-   * At third level it is simple list containing listeners subscribed to given event with given priority.
-   *
+   * Subscribes listeners in bulk.
+   * 
+   * Listeners array is a simple structure of 3 levels:
+   * - At first level it is associative array where keys are names of registered events
+   * - At second level it is indexed array where keys are priority values
+   * - At third level it is simple list containing listeners subscribed to given event with given priority
+   * 
    * @param array $listeners
+   * 
+   * @return void
    */
   public function addListeners($listeners);
 
   // ...
 }
 ```
-Listeners array is simple structure of 3 levels. At first level it is associative array where keys are 
-names of registered events. At second level it is indexed array where keys are priority values. 
-At third level it is simple list containing listeners subscribed to given event with given priority.
+Listeners array is a simple structure of 3 levels:
+- At first level it is associative array where keys are names of registered events
+- At second level it is indexed array where keys are priority values
+- At third level it is simple list containing listeners subscribed to given event with given priority
 
 Example:
 ```php
@@ -236,7 +249,8 @@ it makes it problematic to work with listeners that return values which cannot b
 success or failure. This especially holds true for methods which allow for method chaining or implement 
 fluent interface. To work around this problem you can use `stop` and `ignoreReturnValue` methods on
 event context, though, that requires wiring your listener with event context. 
-Everything is a trade-off, someone once said.  
+Everything is a trade-off, someone once said.
+
 ### Context
 Event context is simple data object holding information about the dispatchment process. 
 See `Koriit\EventDispatcher\EventContextInterface` for more information.
@@ -246,7 +260,7 @@ You can pass additional parameters to be used by invoker while injecting listene
 ```php
 // ..
 
-$dispatcher->dispatch(ApplicationLifecycle::INITIALIZING, ["event" => new InitializationEvent()]);
+$dispatcher->dispatch(InitializationEvent::class, ["event" => new InitializationEvent()]);
 ```
 ```php
 function listener($event) {

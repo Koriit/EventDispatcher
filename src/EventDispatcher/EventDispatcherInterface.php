@@ -47,12 +47,12 @@ interface EventDispatcherInterface
     public function addListener($eventName, $listener, $priority = 0);
 
     /**
-     * Subscribes listeners en masse.
+     * Subscribes listeners in bulk.
      *
-     * Listeners array is simple structure of 3 levels.
-     * At first level it is associative array where keys are names of registered events.
-     * At second level it is indexed array where keys are priority values.
-     * At third level it is simple list containing listeners subscribed to given event with given priority.
+     * Listeners array is a simple structure of 3 levels:
+     * - At first level it is associative array where keys are names of registered events
+     * - At second level it is indexed array where keys are priority values
+     * - At third level it is simple list containing listeners subscribed to given event with given priority
      *
      * @param array $listeners
      *
@@ -90,7 +90,7 @@ interface EventDispatcherInterface
     /**
      * Returns listeners array.
      *
-     * @see EventDispatcherInterface::addListeners For description of listeners array
+     * @see EventDispatcherInterface::addListeners for description of listeners array
      *
      * @return array
      */
